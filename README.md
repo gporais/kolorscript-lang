@@ -20,29 +20,27 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
 
 1. Create new file and name it `test.ks`
 2. Copy and paste the code below (including whitespaces)
-
-    >${\texttt{\color{gold}\space\space"Hello world!"\space\space.}}$
-
+    ```
+      "Hello world!"  .
+    ```
     Or type:
-
     `<space><space>"Hello world!"<space><space>.`
-
 3. Save and press F2 to load your code
 
     Result: 
-![output-1](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-1.gif)
+    ![output-1](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-1.gif)
 
 4. Again, copy and paste the code below (including whitespaces)
-    >${\texttt{\color{red}my-name\space\space\space\color{gray}(--)\space\space\space\space This function prints my name}}\newline\texttt{\color{green}\space"My name is George!"\space.\space;\space\space\color{gold}my-name}$
-
+    ```
+    my-name   (--)    This function prints my name
+     "My name is George!" . ;  my-name
+    ```
     Or type:
-
     `my-name<space><space><space>(--)<space><space><space><space>This function prints my name<enter><space>"My name is George!"<space>.<space>;<space><space>my-name`
-
 5. Save and press F2 to load your code
 
     Result:
-![output-2](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-2.gif)
+    ![output-2](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-2.gif)
 
 > [!IMPORTANT]
 > Explicitly showing `<space>` when typing the code is due to prefix whitespaces are CRITICAL, for it defines the color of the word. Please make sure there are NO unused prefix whitespace anywhere in the file.
