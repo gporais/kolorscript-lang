@@ -1,0 +1,124 @@
+{
+  "name": "kolorscript-lang",
+  "displayName": "kolorScript",
+  "description": "A modern variant of colorForth",
+  "version": "1.0.0",
+  "publisher": "george-phillip-orais",
+  "author": {
+		"email": "orais.georgephillip@gmail.com",
+		"name": "George-Phillip Orais",
+		"url": "https://github.com/gporais"
+	},
+  "icon": "images/logo.png",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "license": "MIT",
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "kolorScript.loadFile",
+      "title": "kolorScript: Load file"
+    },
+    {
+      "command": "kolorScript.executeWords",
+      "title": "kolorScript: Execute words"
+    },
+    {
+      "command": "kolorScript.showWords",
+      "title": "kolorScript: Show words"
+    },
+    {
+      "command": "kolorScript.toggleColorBlind",
+      "title": "kolorScript: Toggle Color Blind theme"
+    },
+    {
+      "command": "kolorScript.toggleLightTheme",
+      "title": "kolorScript: Toggle Light theme"
+    }],
+  "keybindings": [{
+      "key": "f2",
+      "command": "kolorScript.loadFile"
+    },
+    {
+      "key": "f4",
+      "command": "kolorScript.executeWords"
+    },
+    {
+      "key": "f6",
+      "command": "kolorScript.showWords"
+    },
+    {
+      "key": "f8",
+      "command": "kolorScript.toggleColorBlind"
+    },
+    {
+      "key": "f9",
+      "command": "kolorScript.toggleLightTheme"
+    }],
+	"languages": [{
+      "id": "kolorscript",
+      "aliases": ["kolorScript", "kolorscript"],
+      "extensions": [".ks"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "kolorscript",
+      "scopeName": "source.kolorscript",
+      "path": "./syntaxes/kolorscript.tmLanguage.json"
+    }],
+    "themes": [{
+      "label": "kolorScript Default Theme (dark)",
+      "uiTheme": "vs-dark",
+      "path": "./themes/kolorScript Default Theme-color-theme-dark.json"
+      },
+      {
+        "label": "kolorScript Color Blind Theme (dark)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/kolorScript Color Blind Theme-color-theme-dark.json"
+      },
+      {
+      "label": "kolorScript Default Theme (light)",
+      "uiTheme": "vs",
+      "path": "./themes/kolorScript Default Theme-color-theme-light.json"
+      },
+      {
+        "label": "kolorScript Color Blind Theme (light)",
+        "uiTheme": "vs",
+        "path": "./themes/kolorScript Color Blind Theme-color-theme-light.json"
+    }],
+    "configuration": {
+      "title": "kolorScript",
+      "properties": {
+        "kolorScript.verboseLoading": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show more details when loading."
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gporais/kolorscript-lang.git"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.84.0",
+    "@types/mocha": "^10.0.3",
+    "@types/node": "18.x",
+    "eslint": "^8.52.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2",
+    "@vscode/test-electron": "^2.3.6"
+  }
+}

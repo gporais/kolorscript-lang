@@ -1,0 +1,170 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "kolorScript",
+	"patterns": [
+		{
+			"include": "#invalids"
+		},
+		{
+			"include": "#defines"
+		},
+		{
+			"include": "#variables"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#compiles"
+		},
+		{
+			"include": "#interprets"
+		},
+		{
+			"include": "#comments"
+		}
+	],
+	"repository": {
+		"invalids": {
+			"patterns": [
+				{
+					"name": "invalid.hexadecimal.kolorscript",
+					"match": "0(x|X)\\h+"
+				},
+				{
+					"name": "invalid.decimal.kolorscript",
+					"match": "-?\\d*\\.?\\d+"
+				},
+				{
+					"name": "invalid.punctuation.kolorscript",
+					"match": "([*|+|\\-|;|@|.|!|>|<|=])+-?"
+				},
+				{
+					"name": "invalid.string.doublequote.kolorscript",
+					"match": "\".*?\""
+				},
+				{
+					"name": "invalid.string.singlequote.kolorscript",
+					"match": "'.*?'"
+				}
+			]
+		},
+		"defines": {
+			"patterns": [
+				{
+					"name": "define.word.kolorscript",
+					"match": "^\\w+\\.*\\-*\\w*(?=   )"
+				}
+			]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"name": "variable.word.kolorscript",
+					"match": "^\\w+\\.*\\-*\\w*(?=  )"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.word.kolorscript",
+					"match": "^\\w+\\.*\\-*\\w*"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.hexadecimal.kolorscript",
+					"match": "   0(x|X)\\h+"
+				},
+				{
+					"name": "comment.decimal.kolorscript",
+					"match": "   -?\\d*\\.?\\d+"
+				},
+				{
+					"name": "comment.word.kolorscript",
+					"match": "   [-|.]?\\w+\\.*\\-*\\w*\\?*"
+				},
+				{
+					"name": "comment.punctuation.kolorscript",
+					"match": "   ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+				},
+				{
+					"name": "comment.string.doublequote.kolorscript",
+					"match": "   \".*\""
+				},
+				{
+					"name": "comment.string.singlequote.kolorscript",
+					"match": "   '.*'"
+				},
+				{
+					"name": "comment.group.kolorscript",
+					"match": "   \\(.*\\)"
+				},
+				{
+					"name": "comment.line.kolorscript",
+					"match": "    .*"
+				}
+			]
+		},
+		"interprets": {
+			"patterns": [
+				{
+					"name": "interpret.hexadecimal.kolorscript",
+					"match": "  0(x|X)\\h+"
+				},
+				{
+					"name": "interpret.decimal.kolorscript",
+					"match": "  -?\\d*\\.?\\d+"
+				},
+				{
+					"name": "interpret.word.kolorscript",
+					"match": "  [-|.]?\\w+\\.*\\-*\\w*\\?*"
+				},
+				{
+					"name": "interpret.punctuation.kolorscript",
+					"match": "  ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+				},
+				{
+					"name": "interpret.string.doublequote.kolorscript",
+					"match": "  \".*?\""
+				},
+				{
+					"name": "interpret.string.singlequote.kolorscript",
+					"match": "  '.*?'"
+				}
+			]
+		},
+		"compiles": {
+			"patterns": [
+				{
+					"name": "compile.hexadecimal.kolorscript",
+					"match": " 0(x|X)\\h+"
+				},
+				{
+					"name": "compile.decimal.kolorscript",
+					"match": " -?\\d*\\.?\\d+"
+				},
+				{
+					"name": "compile.word.kolorscript",
+					"match": " [-|.]?\\w+\\.*\\-*\\w*\\?*"
+				},
+				{
+					"name": "compile.punctuation.kolorscript",
+					"match": " ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+				},
+				{
+					"name": "compile.string.doublequote.kolorscript",
+					"match": " \".*?\""
+				},
+				{
+					"name": "compile.string.singlequote.kolorscript",
+					"match": " '.*?'"
+				}
+			]
+		}
+	},
+	"scopeName": "source.kolorscript"
+}

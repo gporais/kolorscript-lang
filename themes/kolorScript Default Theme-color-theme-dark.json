@@ -1,0 +1,74 @@
+{
+	"name": "kolorScript Default Theme",
+	"colors": {
+		"editor.background": "#1a1a1a",
+		"editor.foreground": "#ffffff",
+		"activityBarBadge.background": "#007acc",
+		"sideBarTitle.foreground": "#bbbbbb"
+	},
+	"tokenColors": [
+		{
+			"name": "Invalids",
+			"scope": [				
+				"invalid"
+			],
+			"settings": {
+				"foreground": "#ffffff"
+			}
+		},
+		{
+			"name": "Constants",
+			"scope": [				
+				"constant"
+			],
+			"settings": {
+				"foreground": "#277bb3"
+			}
+		},
+		{
+			"name": "Variables",
+			"scope": [				
+				"variable"
+			],
+			"settings": {
+				"foreground": "#cc00ff"
+			}
+		},
+		{
+			"name": "Defines",
+			"scope": [				
+				"define"
+			],
+			"settings": {
+				"foreground": "#e74c3c"
+			}
+		},
+		{
+			"name": "Compiles",
+			"scope": [				
+				"compile"
+			],
+			"settings": {
+				"foreground": "#2ECC71"
+			}
+		},		
+		{
+			"name": "Interprets",
+			"scope": [
+				"interpret"
+			],
+			"settings": {
+				"foreground": "#f1c40f"
+			}
+		},
+		{
+			"name": "Comments",
+			"scope": [
+				"comment"
+			],
+			"settings": {
+				"foreground": "#bbbbbb"
+			}
+		}		
+	]
+}
