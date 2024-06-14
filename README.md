@@ -67,12 +67,14 @@ This is a replacement and improvement for **`WORDS`** from Forth. It shows the s
 Press `F8` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Color Blind theme`
 ![Color Blind](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/ColorBlind.gif)
 Where:
-$\newline{\texttt{\color{green}GREEN}}$ is kept as Normal text
-$\newline{\texttt{\color{gold}YELLOW}}$ is set to **Bold** text
-$\newline{\texttt{\color{gray}GRAY}}$ is set to *Italic* text
-$\newline{\texttt{\color{blue}BLUE}}$ is set to Underlined text
-$\newline{\texttt{\color{magenta}MAGENTA}}$ is set to Underlined text
-$\newline{\texttt{\color{red}RED}}$ is set to Underlined text
+
+${\texttt{\color{green}GREEN}}$ is kept as Normal text
+
+${\texttt{\color{gold}YELLOW}}$ is set to **Bold** text
+
+${\texttt{\color{gray}GRAY}}$ is set to *Italic* text
+
+${\texttt{\color{blue}BLUE \color{magenta}MAGENTA \color{red}RED}}$ are set to Underlined text
 
 ### Light theme
 Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Light theme`
