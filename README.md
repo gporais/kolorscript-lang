@@ -30,7 +30,7 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
 3. Save and press F2 to load your code
 
     Result: 
-![output-1](images/screenshots/Output-1.gif)
+![output-1](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-1.gif)
 
 4. Again, copy and paste the code below (including whitespaces)
     >${\texttt{\color{red}my-name\space\space\space\color{gray}(--)\space\space\space\space This function prints my name}}\newline\texttt{\color{green}\space"My name is George!"\space.\space;\space\space\color{gold}my-name}$
@@ -42,7 +42,7 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
 5. Save and press F2 to load your code
 
     Result:
-![output-2](images/screenshots/Output-2.gif)
+![output-2](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/Output-2.gif)
 
 > [!IMPORTANT]
 > Explicitly showing `<space>` when typing the code is due to prefix whitespaces are CRITICAL, for it defines the color of the word. Please make sure there are NO unused prefix whitespace anywhere in the file.
@@ -50,22 +50,22 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
 ## Usage
 ### Running your code
 Press `F2` OR press `F1` then type `kolor` and scroll to select `kolorScript: Load file`
-![Load file](images/screenshots/LoadFile.gif)
+![Load file](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/LoadFile.gif)
 Please make sure the editor window with intended code has the focus.
 
 ### Execute some words
 Press `F4` OR press `F1` then type `kolor` and scroll to select `kolorScript: Execute words`
-![Execute words](images/screenshots/ExecuteWords.gif)
+![Execute words](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/ExecuteWords.gif)
 Please make sure the words you plan to execute has already been loaded. This mechanism is like executing Forth words in a command line.
 
 ### Showing all the words
 Press `F6` OR press `F1` then type `kolor` and scroll to select `kolorScript: Show words`
-![Show words](images/screenshots/ShowWords.gif)
+![Show words](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/ShowWords.gif)
 This is a replacement and improvement for **`WORDS`** from Forth. It shows the stack-effect and bried description for BOTH built-in and user defined (after loading) words in the Output panel.
 
 ### Color blind theme
 Press `F8` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Color Blind theme`
-![Color Blind](images/screenshots/ColorBlind.gif)
+![Color Blind](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/ColorBlind.gif)
 Where:
 $\newline{\texttt{\color{green}GREEN}}$ is kept as Normal text
 $\newline{\texttt{\color{gold}YELLOW}}$ is set to **Bold** text
@@ -76,7 +76,7 @@ $\newline{\texttt{\color{red}RED}}$ is set to Underlined text
 
 ### Light theme
 Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Light theme`
-![Light theme](images/screenshots/LightTheme.gif)
+![Light theme](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/LightTheme.gif)
 
 > [!TIP]
 > Use the function keys for faster and convenient access.
@@ -87,7 +87,7 @@ Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: To
 2. Click setting icon of `kolorScript` extension and select `Extension Settings`
 3. Check the `Show more details when loading` checkbox
 4. Close `Settings` tab, click the editor window and press F2 
-![Verbose loading](images/screenshots/VerboseLoading.gif)
+![Verbose loading](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/VerboseLoading.gif)
 
 ## Coding guidelines
 ### General Information
