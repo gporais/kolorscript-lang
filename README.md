@@ -59,7 +59,7 @@ Please make sure the words you plan to execute has already been loaded. This mec
 ### Showing all the words
 Press `F6` OR press `F1` then type `kolor` and scroll to select `kolorScript: Show words`
 ![Show words](https://github.com/gporais/kolorscript-lang/blob/master/images/screenshots/ShowWords.gif)
-This is a replacement and improvement for **`WORDS`** from Forth. It shows the stack-effect and bried description for BOTH built-in and user defined (after loading) words in the Output panel.
+This is a replacement and improvement for **`WORDS`** from Forth. It shows the stack-effect and brief description for BOTH built-in and user defined (after loading) words in the Output panel.
 
 ### Color blind theme
 Press `F8` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Color Blind theme`
