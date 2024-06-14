@@ -138,7 +138,7 @@ Description:
 ---
 
 ### ${\texttt{\color{blue}BLUE means "define a CONSTANT with this word as its name"}}$
-Syntax: ${\texttt{\color{blue}word}}$`<space>`${\texttt{\color{green}value}}$
+Syntax: ${\texttt{\color{blue}word}}$ `<space>` ${\texttt{\color{green}value}}$
 
 Description:
 * Are global in scope
@@ -147,7 +147,7 @@ Description:
 ---
 
 ### ${\texttt{\color{magenta}MAGENTA means "define a VARIABLE with this word as its name"}}$
-Syntax: ${\texttt{\color{magenta}word}}$`<space><space>`${\texttt{\color{gold}value and/or word(s)}}$
+Syntax: ${\texttt{\color{magenta}word}}$ `<space><space>` ${\texttt{\color{gold}value and/or word(s)}}$
 
 Description:
 * Are global in scope
@@ -158,15 +158,15 @@ Note: The top of Data stack before leaving the line is popped and becomes the va
 ---
 
 ### ${\texttt{\color{red}RED means "define a FUNCTION with this word as its name"}}$
-Syntax 1: ${\texttt{\color{red}word}}$`<space><space><space>`${\texttt{\color{gray}stack-effect}}$`<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
+Syntax 1: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}stack-effect}}$ `<space>` ${\texttt{\color{green}value(s) and/or word(s) ;}}$
 
-Syntax 2: ${\texttt{\color{red}word}}$`<space><space><space>`${\texttt{\color{gray}(stack - effects)}}$`<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
+Syntax 2: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}(stack - effects)}}$ `<space>` ${\texttt{\color{green}value(s) and/or word(s) ;}}$
 
-Syntax 3: ${\texttt{\color{red}word}}$`<space><space><space><space>`${\texttt{\color{gray}brief description}}$
+Syntax 3: ${\texttt{\color{red}word}}$ `<space><space><space><space>` ${\texttt{\color{gray}brief description}}$
 
 `<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
 
-Syntax 4: ${\texttt{\color{red}word}}$`<space><space><space>`${\texttt{\color{gray}(stack - effects)}}$`<space><space><space><space>`${\texttt{\color{gray}brief description}}$
+Syntax 4: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}(stack - effects)}}$ `<space><space><space><space>` ${\texttt{\color{gray}brief description}}$
 
 `<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
 
