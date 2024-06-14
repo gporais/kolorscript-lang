@@ -106,7 +106,7 @@ Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: To
 ---
 
 ### ${\texttt{\color{green}GREEN means "COMPILE this word"}}$
-Syntax: `<space>`${\texttt{\color{green}word}}$
+Syntax: `<space>` ${\texttt{\color{green}word}}$
 
 Description: 
 * Are executed at run-time
@@ -115,7 +115,7 @@ Description:
 ---
 
 ### ${\texttt{\color{gold}YELLOW means "INTERPRET this word"}}$
-Syntax: `<space><space>`${\texttt{\color{gold}word}}$
+Syntax: `<space><space>` ${\texttt{\color{gold}word}}$
 
 Description: 
 * Are executed at compile-time
@@ -124,11 +124,11 @@ Description:
 ---
 
 ### ${\texttt{\color{gray}GRAY means "COMMENT out this word(s)"}}$
-Syntax 1: `<space><space><space>`${\texttt{\color{gray}word}}$
+Syntax 1: `<space><space><space>` ${\texttt{\color{gray}word}}$
 
-Syntax 2: `<space><space><space>`${\texttt{\color{gray}(word1 word2 word3)}}$
+Syntax 2: `<space><space><space>` ${\texttt{\color{gray}(word1 word2 word3)}}$
 
-Syntax 3: `<space><space><space><space>`${\texttt{\color{gray}word1 word2 ... wordN}}$
+Syntax 3: `<space><space><space><space>` ${\texttt{\color{gray}word1 word2 ... wordN}}$
 
 Description:
 * Syntax 1 is for commenting a single word
