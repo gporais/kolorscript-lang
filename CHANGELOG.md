@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.0.1] - 2024-06-21
+
+### Fixed
+
+- Fix README.md to consider Marketplace markdown 
+
 ## [1.0.0] - 2024-06-14
 
 - Initial release

@@ -2,7 +2,7 @@
   "name": "kolorscript-lang",
   "displayName": "kolorScript",
   "description": "A modern variant of colorForth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "gporais",
   "author": {
 		"email": "orais.georgephillip@gmail.com",
