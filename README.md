@@ -1,4 +1,4 @@
-# ${\textsf{\color{red}kolor\color{green}Script}}$
+# <span style="color:red">**kolor**</span><span style="color:green">**Script**</span>
 
 A modern variant of [colorForth](https://colorforth.github.io/cf.htm) that uses ASCII for encoding and text files as storage to allow code sharing using modern repositories.
 
@@ -42,8 +42,7 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
     Result:
     ![output-2](https://raw.githubusercontent.com/gporais/kolorscript-lang/master/images/screenshots/Output-2.gif)
 
-> [!IMPORTANT]
-> Explicitly showing `<space>` when typing the code is due to prefix whitespaces are CRITICAL, for it defines the color of the word. Please make sure there are NO unused prefix whitespace anywhere in the file.
+IMPORTANT: Explicitly showing `<space>` when typing the code is due to prefix whitespaces are CRITICAL, for it defines the color of the word. Please make sure there are NO unused prefix whitespace anywhere in the file.
 
 ## Usage
 ### Running your code
@@ -66,20 +65,23 @@ Press `F8` OR press `F1` then type `kolor` and scroll to select `kolorScript: To
 ![Color Blind](https://raw.githubusercontent.com/gporais/kolorscript-lang/master/images/screenshots/ColorBlind.gif)
 Where:
 
-${\texttt{\color{green}GREEN}}$ is kept as Normal text
+<span style="color:green">**GREEN**</span> words are kept as Normal text
 
-${\texttt{\color{gold}YELLOW}}$ is set to **Bold** text
+<span style="color:yellow">**YELLOW**</span> words are set to **Bold** text
 
-${\texttt{\color{gray}GRAY}}$ is set to *Italic* text
+<span style="color:gray">**GRAY**</span> words are set to *Italic* text
 
-${\texttt{\color{blue}BLUE \color{magenta}MAGENTA \color{red}RED}}$ are set to Underlined text
+<span style="color:blue">**BLUE**</span> words are set to <u>Underlined</u> text
+
+<span style="color:magenta">**MAGENTA**</span> words are set to <u>Underlined</u> text
+
+<span style="color:red">**RED**</span> words are set to <u>Underlined</u> text
 
 ### Light theme
 Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Light theme`
 ![Light theme](https://raw.githubusercontent.com/gporais/kolorscript-lang/master/images/screenshots/LightTheme.gif)
 
-> [!TIP]
-> Use the function keys for faster and convenient access.
+TIP: Use the function keys for faster and convenient access.
 
 ## Settings
 ### Enable verbose loading
@@ -103,8 +105,9 @@ Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: To
 
 ---
 
-### ${\texttt{\color{green}GREEN means "COMPILE this word"}}$
-Syntax: `<space>` ${\texttt{\color{green}word}}$
+### <span style="color:green">**GREEN** means "COMPILE this word"</span>
+
+Syntax: `<space>` <span style="color:green">word</span>
 
 Description: 
 * Are executed at run-time
@@ -112,8 +115,9 @@ Description:
 
 ---
 
-### ${\texttt{\color{gold}YELLOW means "INTERPRET this word"}}$
-Syntax: `<space><space>` ${\texttt{\color{gold}word}}$
+### <span style="color:gold">**YELLOW** means "INTERPRET this word"</span>
+
+Syntax: `<space><space>` <span style="color:gold">word</span>
 
 Description: 
 * Are executed at compile-time
@@ -121,12 +125,13 @@ Description:
 
 ---
 
-### ${\texttt{\color{gray}GRAY means "COMMENT out this word(s)"}}$
-Syntax 1: `<space><space><space>` ${\texttt{\color{gray}word}}$
+### <span style="color:gray">**GRAY** means "COMMENT out this word(s)"</span>
 
-Syntax 2: `<space><space><space>` ${\texttt{\color{gray}(word1 word2 word3)}}$
+Syntax 1: `<space><space><space>` <span style="color:gray">word</span>
 
-Syntax 3: `<space><space><space><space>` ${\texttt{\color{gray}word1 word2 ... wordN}}$
+Syntax 2: `<space><space><space>` <span style="color:gray">(word1 word2 word3)</span>
+
+Syntax 3: `<space><space><space><space>` <span style="color:gray">word1 word2 ... wordN</span>
 
 Description:
 * Syntax 1 is for commenting a single word
@@ -135,51 +140,61 @@ Description:
 
 ---
 
-### ${\texttt{\color{blue}BLUE means "define a CONSTANT with this word as its name"}}$
-Syntax: ${\texttt{\color{blue}word}}$ `<space>` ${\texttt{\color{green}value}}$
+### <span style="color:blue">**BLUE** means "define a CONSTANT with this word as its name"</span>
+
+Syntax: <span style="color:blue">word</span> `<space>` <span style="color:green">value</span>
 
 Description:
 * Are global in scope
-* Only ${\texttt{\color{green}green}}$ Number or String is acceptable to initialize constants
-
----
-
-### ${\texttt{\color{magenta}MAGENTA means "define a VARIABLE with this word as its name"}}$
-Syntax: ${\texttt{\color{magenta}word}}$ `<space><space>` ${\texttt{\color{gold}value and/or word(s)}}$
-
-Description:
-* Are global in scope
-* Only ${\texttt{\color{gold}yellow}}$ Number, String or Word(s) that leaves a value in the Data stack is acceptable to initialize variables
-
-Note: The top of Data stack before leaving the line is popped and becomes the value of the variable
-
----
-
-### ${\texttt{\color{red}RED means "define a FUNCTION with this word as its name"}}$
-Syntax 1: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}stack-effect}}$ `<space>` ${\texttt{\color{green}value(s) and/or word(s) ;}}$
-
-Syntax 2: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}(stack - effects)}}$ `<space>` ${\texttt{\color{green}value(s) and/or word(s) ;}}$
-
-Syntax 3: ${\texttt{\color{red}word}}$ `<space><space><space><space>` ${\texttt{\color{gray}brief description}}$
-
-`<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
-
-Syntax 4: ${\texttt{\color{red}word}}$ `<space><space><space>` ${\texttt{\color{gray}(stack - effects)}}$ `<space><space><space><space>` ${\texttt{\color{gray}brief description}}$
-
-`<space>`${\texttt{\color{green}value(s) and/or word(s) ;}}$
-
-Description:
-* ${\texttt{\color{green}green}}$ Number, String or Word(s) is used to define the function
-* ${\texttt{\color{gold}yellow}}$ Word is fully recommended when utilizing constants and variables within function definition, this is for readbility and performance
-* ${\texttt{\color{green};}}$ is also used for closing function definition
+* Only <span style="color:green">GREEN</span> Number or String is acceptable to initialize constants
 
 Note:
-* Transition of ${\texttt{\color{gold}yellow}}$ to ${\texttt{\color{green}green}}$ word within function definition will have the top of Data stack popped and compiled as literal, this mechanism is useful for handling constants and variables within function definition
+* Should be one liner and focusing only for initializing the value
+* After <span style="color:green">value</span> , comments (gray words) or macros (yellow words) can follow
+
+---
+
+### <span style="color:magenta">**MAGENTA** means "define a VARIABLE with this word as its name"</span>
+
+Syntax: <span style="color:magenta">word</span> `<space><space>` <span style="color:gold">value and/or word(s)</span>
+
+Description:
+* Are global in scope
+* Only <span style="color:gold">YELLOW</span> Number, String or Word(s) that leaves a value in the Data stack is acceptable to initialize variables
+
+Note:
+* Should be one liner and focusing only for initializing the value
+* The top of Data stack before leaving the line is popped and becomes the value of the variable
+
+---
+
+### <span style="color:red">**RED** means "define a FUNCTION with this word as its name"</span>
+
+Syntax 1: <span style="color:red">word</span> `<space><space><space>` <span style="color:gray">stack-effect</span> `<space>` <span style="color:green">value(s) and/or word(s) ;</span>
+
+Syntax 2: <span style="color:red">word</span> `<space><space><space>` <span style="color:gray">(stack - effects)</span> `<space>` <span style="color:green">value(s) and/or word(s) ;</span>
+
+Syntax 3: <span style="color:red">word</span> `<space><space><space><space>` <span style="color:gray">brief description</span> `<enter>`
+
+`<space>` <span style="color:green">value(s) and/or word(s) ;</span>
+
+Syntax 4: <span style="color:red">word</span> `<space><space><space>` <span style="color:gray">(stack - effects)</span> `<space><space><space><space>` <span style="color:gray">brief description</span> `<enter>`
+
+`<space>` <span style="color:green">value(s) and/or word(s) ;</span>
+
+Description:
+* <span style="color:green">GREEN</span> Number, String or Word(s) is used to define the function
+* <span style="color:gold">YELLOW</span> Word is fully recommended when utilizing constants and variables within function definition, this is for readbility and performance
+* <span style="color:green">GREEN</span> semi-colon ( <span style="color:green">**;**</span> ) is used for closing function definition
+
+Note:
+* Transition of <span style="color:gold">YELLOW</span> to <span style="color:green">GREEN</span> word within function definition will have the top of Data stack popped and compiled as literal, this mechanism is useful for handling constants and variables within function definition
 * Comments inline with the function name is used when `Showing all the words` by pressing `F6`, so Syntax 4 is fully recommended
 
 ---
 
-### ${\texttt{\color{white}WHITE means "this word has INVALID format"}}$
+**WHITE** (for dark theme) or **BLACK** (for light theme)  means "this word has INVALID format"
+
 Syntax: Applicable to all patterns
 
 Description:
@@ -188,10 +203,10 @@ Description:
 
 ---
 
-## Built-in words dictionary
+## Reference
 (Link to be followed)
 
-## Sample codes
+## Examples
 (Link to be followed)
 
 ## To be implemented
@@ -205,5 +220,9 @@ Description:
 ### 1.0.0
 
 Initial release of kolorScript
+
+### 1.0.1
+
+Fixed README.md to consider Marketplace markdown
 
 ---
