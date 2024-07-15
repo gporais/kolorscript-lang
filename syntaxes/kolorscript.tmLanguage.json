@@ -37,7 +37,7 @@
 				},
 				{
 					"name": "invalid.punctuation.kolorscript",
-					"match": "([*|+|\\-|;|@|.|!|>|<|=])+-?"
+					"match": "([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
 				},
 				{
 					"name": "invalid.string.doublequote.kolorscript",
@@ -89,7 +89,7 @@
 				},
 				{
 					"name": "comment.punctuation.kolorscript",
-					"match": "   ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+					"match": "   ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
 				},
 				{
 					"name": "comment.string.doublequote.kolorscript",
@@ -125,7 +125,7 @@
 				},
 				{
 					"name": "interpret.punctuation.kolorscript",
-					"match": "  ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+					"match": "  ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
 				},
 				{
 					"name": "interpret.string.doublequote.kolorscript",
@@ -153,7 +153,7 @@
 				},
 				{
 					"name": "compile.punctuation.kolorscript",
-					"match": " ([*|+|\\-|;|@|.|!|>|<|=])+-?"
+					"match": " ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
 				},
 				{
 					"name": "compile.string.doublequote.kolorscript",
