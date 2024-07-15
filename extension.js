@@ -101,8 +101,8 @@ let builtInDesc = [
 			{name: "over", stackEffect: "any1 any2 -- any1 any2 any1", description: ""},
 			{name: "swap", stackEffect: "any1 any2 -- any2 any1", description: ""},
 			{name: "nip", stackEffect: "any1 any2 -- any2", description: ""},
-			{name: "if", stackEffect: "num -- num", description: "jump to 'then' if num is zero"},
-			{name: "-if", stackEffect: "num -- num", description: "jump to 'then' if num is positive number"},
+			{name: "if", stackEffect: "num --", description: "jump to 'then' if num is zero"},
+			{name: "-if", stackEffect: "num --", description: "jump to 'then' if num is positive number"},
 			{name: "then", stackEffect: "--", description: ""},			
 			{name: "=", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 equal to any2, else 0"},
 			{name: ">", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 greater than any2, else 0"},
@@ -440,9 +440,8 @@ const builtInFunc = {
 	},
 	"if" : function(addr) {
 		let isSuccess = true;
-		const dsLen = dataStack.length;
-		if(dsLen > 0) {
-			const t = dataStack[dsLen-1];
+		if(dataStack.length > 0) {
+			const t = dataStack.pop();
 			if(isNaN(t)) {
 				errorMessage = "top value of Data stack is not a number";
 				isSuccess = false;
@@ -464,9 +463,8 @@ const builtInFunc = {
 	},
 	"-if" : function(addr) {
 		let isSuccess = true;
-		const dsLen = dataStack.length;
-		if(dsLen > 0) {
-			const t = dataStack[dsLen-1];
+		if(dataStack.length > 0) {
+			const t = dataStack.pop();
 			if(isNaN(t)) {
 				errorMessage = "top value of Data stack is not a number";
 				isSuccess = false;
