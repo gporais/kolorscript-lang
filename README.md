@@ -67,7 +67,7 @@ Where:
 
 <span style="color:green">**GREEN**</span> words are kept as Normal text
 
-<span style="color:yellow">**YELLOW**</span> words are set to **Bold** text
+<span style="color:gold">**YELLOW**</span> words are set to **Bold** text
 
 <span style="color:gray">**GRAY**</span> words are set to *Italic* text
 
@@ -184,7 +184,7 @@ Syntax 4: <span style="color:red">word</span> `<space><space><space>` <span styl
 
 Description:
 * <span style="color:green">GREEN</span> Number, String or Word(s) is used to define the function
-* <span style="color:gold">YELLOW</span> Word is fully recommended when utilizing constants and variables within function definition, this is for readbility and performance
+* <span style="color:gold">YELLOW</span> Word is fully recommended when utilizing constants and variables within function definition, this is for readability and performance
 * <span style="color:green">GREEN</span> semi-colon ( <span style="color:green">**;**</span> ) is used for closing function definition
 
 Note:
