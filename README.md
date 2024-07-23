@@ -1,6 +1,6 @@
 # <span style="color:red">**kolor**</span><span style="color:green">**Script**</span>
 
-A modern variant of [colorForth](https://colorforth.github.io/cf.htm) that uses ASCII for encoding and text files as storage to allow code sharing using modern repositories.
+A modern variant of Charles H. Moore's [colorForth](https://colorforth.github.io/cf.htm) that uses ASCII for encoding and text files as storage to allow code sharing using modern repositories.
 
 Just in case, here is a good reference for Forth programming: [Starting Forth](https://www.forth.com/wp-content/uploads/2018/01/Starting-FORTH.pdf)
 
