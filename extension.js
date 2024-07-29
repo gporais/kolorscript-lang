@@ -73,6 +73,12 @@ const forStack = [];
 const fdStack = [];
 const buffSize = 1024;
 
+const httpReqOptions = {
+	method: 'POST',
+	headers: {},
+	body: ""
+};
+
 let builtInDesc = [
 	{	name: "Built-in",
 		nameMaxLen: 0,
@@ -126,7 +132,20 @@ let builtInDesc = [
 			{name: "close-file", stackEffect: "fid --", description: "it closes the specific file based on fid"},
 			{name: "drop-all", stackEffect: "--", description: "it clears the Data stack"},
 			{name: "count-all", stackEffect: "-- num", description: "num = total count of items in Data stack"},
-			{name: "split-str", stackEffect: "str1 str2 -- strN1 strN2 strNx num", description: "str1: string to be split, str2: separator, num = number of strings after split"}]}
+			{name: "split-str", stackEffect: "str1 str2 -- strN1 strN2 strNx num", description: "str1: string to be split, str2: separator, num = number of strings after split"},
+
+			{name: "index-of", stackEffect: "strMain strSub (numStart) -- numIndex", description: "Return the position of sub string within the main string if found"},
+			{name: "sub-str", stackEffect: "strMain numStart numEnd -- strSub", description: "Retrieves the sub string from main string based on start and end position"},
+			{name: "to-base64", stackEffect: "str -- strInBase64", description: "Converts the string to base64 string"},
+			{name: "to-urlencode", stackEffect: "str -- strURLenconded", description: "Converts the string to URL encoded string"},
+			{name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
+			{name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
+			{name: "http-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
+			{name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
+			{name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
+			{name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"}
+		]
+	}
 ];
 const builtInFunc = {
 	"*" : function() {
@@ -1044,6 +1063,226 @@ const builtInFunc = {
 			isSuccess = false;
 		}
 		return isSuccess;
+	},
+	"index-of" : function() {
+		let isSuccess = true;
+		let startIdx = 0;
+		if(typeof dataStack[dataStack.length-1] == "number") {
+			startIdx = dataStack.pop();
+		}
+
+		if(dataStack.length > 1) {
+			const searchTerm = dataStack.pop();
+			const paragraph = dataStack[dataStack.length-1];
+			if(typeof searchTerm == "string") {
+				if(typeof paragraph == "string") {
+					dataStack.push(paragraph.indexOf(searchTerm, startIdx));
+				}
+				else {
+					errorMessage = "expects a string for paragrap to be searched";
+					isSuccess = false;
+				}				
+			}
+			else {
+				errorMessage = "expects a string for what to search";
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects one number or/and two strings in Data stack";
+			isSuccess = false;
+		}
+
+		return isSuccess;
+	},
+	"sub-str" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 2) {
+			const end = dataStack.pop();
+			const start = dataStack.pop();
+			const str = dataStack[dataStack.length-1];
+			dataStack.push(str.substring(start, end));			
+		}
+		else {
+			errorMessage = "expects two values in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"to-base64" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const str = dataStack.pop();			
+			if(typeof str == "string") {
+				dataStack.push(Buffer.from(str).toString('base64'));
+			}
+			else {
+				errorMessage = "expects a string to be converted";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"to-urlencode" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const str = dataStack.pop();			
+			if(typeof str == "string") {
+				dataStack.push(encodeURIComponent(str));
+			}
+			else {
+				errorMessage = "expects a string to be converted";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"http-get" : function() {
+		let isSuccess = true;
+		if(isPause) {
+			isPause = false;
+		}
+		else {
+			if(dataStack.length > 0) {
+				const url = dataStack.pop();
+				if(typeof url == "string") {
+					isPause = true;
+					fetch(url)
+					.then(response => {
+						if (!response.ok) {
+							errorMessage = "Network response was not ok";
+							isSuccess = false;
+							outputChannel.appendLine(errorMessage);
+						}
+						return response.text();						
+					})
+					.then(data => {dataStack.push(data); loadFile(saveLines, saveFullPath);})
+					.catch(error => { errorMessage = "There has been a problem with your fetch operation: " + error;
+						isSuccess = false;
+						outputChannel.appendLine(errorMessage);	});
+				}
+				else {
+					errorMessage = "expects a string for URL";
+					isSuccess = false;
+				}
+			}
+			else {
+				errorMessage = "expects two strings in Data stack";
+				isSuccess = false;
+			}
+		}		
+		return isSuccess;
+	},
+	"http-post" : function() {
+		let isSuccess = true;
+		if(isPause) {
+			isPause = false;
+		}
+		else {
+			if(dataStack.length > 0) {
+				const url = dataStack.pop();
+				if(typeof url == "string") {
+					isPause = true;						
+
+					fetch(url, httpReqOptions)
+					.then(response => {
+						if (!response.ok) {
+							errorMessage = "Network response was not ok";
+							isSuccess = false;
+							outputChannel.appendLine(errorMessage);
+						}
+						return response.text();
+					})
+					.then(data => {dataStack.push(data); loadFile(saveLines, saveFullPath);})
+					.catch(error => { errorMessage = "There has been a problem with your fetch operation: " + error;
+						isSuccess = false;
+						outputChannel.appendLine(errorMessage);	});
+				}
+				else {
+					errorMessage = "expects a string for URL";
+					isSuccess = false;
+				}
+			}
+			else {
+				errorMessage = "expects two strings in Data stack";
+				isSuccess = false;
+			}
+		}		
+		return isSuccess;
+	},
+	"http-set-header" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 1) {
+			const value = dataStack.pop();
+			const name = dataStack.pop();
+			if(typeof value == "string") {				
+				if(typeof name == "string") {
+					httpReqOptions.headers[name] = value;
+				}
+				else {
+					errorMessage = "expects a string for name";
+					isSuccess = false;
+				}
+			}
+			else {
+				errorMessage = "expects a string for value";
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects two strings in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"http-delete-header" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const name = dataStack.pop();			
+			if(typeof name == "string") {
+				delete httpReqOptions.headers[name];
+			}
+			else {
+				errorMessage = "expects a string for name";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"http-print-request" : function() {
+		let isSuccess = true;
+		outputChannel.append(JSON.stringify(httpReqOptions) + " ");
+		return isSuccess;
+	},
+	"http-set-body" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const body = dataStack.pop();			
+			if(typeof body == "string") {
+				httpReqOptions.body = body;
+			}
+			else {
+				errorMessage = "expects a string for body";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
 	}
 };
 
@@ -1495,7 +1734,7 @@ function loadFile(lines, fullPath) {
 	for (let currRow = initRow; isOK && currRow < lines.length; currRow++) {
 		const words = lines[currRow].split(/(\s+)/).filter(Boolean);
 		// Check for unused tags
-		if(words.length > 1 && words[words.length-1].trim().length  == 0) {
+		if(words.length > 0 && words[words.length-1].trim().length == 0) {
 			isOK = false;
 			errorMessage = "Unused tag (whitespace) found"
 		}
@@ -2007,10 +2246,10 @@ function showWords() {
 			outputChannel.appendLine("[" + funcDesc[i].name + "]");
 			for (let j = 0; j < funcDesc[i].details.length; j++) {
 				if(funcDesc[i].details[j].description.length > 0) {
-					outputChannel.appendLine(funcDesc[i].details[j].name + " ".repeat(funcDesc[i].nameMaxLen - funcDesc[i].details[j].name.length) + "   | D: " + funcDesc[i].details[j].stackEffect + " ".repeat(funcDesc[i].seffectMaxLen - funcDesc[i].details[j].stackEffect.length) + "    where " + funcDesc[i].details[j].description);
+					outputChannel.appendLine(funcDesc[i].details[j].name + " ".repeat(funcDesc[i].nameMaxLen - funcDesc[i].details[j].name.length) + "  | D: " + funcDesc[i].details[j].stackEffect + " ".repeat(funcDesc[i].seffectMaxLen - funcDesc[i].details[j].stackEffect.length) + " |  " + funcDesc[i].details[j].description);
 				}
 				else {
-					outputChannel.appendLine(funcDesc[i].details[j].name + " ".repeat(funcDesc[i].nameMaxLen - funcDesc[i].details[j].name.length) + "   | D: " + funcDesc[i].details[j].stackEffect + " ".repeat(funcDesc[i].seffectMaxLen - funcDesc[i].details[j].stackEffect.length));
+					outputChannel.appendLine(funcDesc[i].details[j].name + " ".repeat(funcDesc[i].nameMaxLen - funcDesc[i].details[j].name.length) + "  | D: " + funcDesc[i].details[j].stackEffect + " ".repeat(funcDesc[i].seffectMaxLen - funcDesc[i].details[j].stackEffect.length));
 				}
 				
 			}
@@ -2092,6 +2331,7 @@ function activate(context) {
 		fp = activeTextEditor.document.uri.fsPath;
 
 		isVerbose = vscode.workspace.getConfiguration("kolorScript").get("verboseLoading");
+		isPrintOut = false;
 		isPause = false;
 
 		loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
