@@ -42,6 +42,8 @@ let listOfFiles = [];
 let isPrintOut = false;
 let isVerbose = false;
 let isPause = false;
+let isEscape = false;
+let timeoutId = 0;
 
 let savePre = 0;
 let savePost = 0;
@@ -138,6 +140,8 @@ let builtInDesc = [
 			{name: "sub-str", stackEffect: "strMain numStart numEnd -- strSub", description: "Retrieves the sub string from main string based on start and end position"},
 			{name: "to-base64", stackEffect: "str -- strInBase64", description: "Converts the string to base64 string"},
 			{name: "to-urlencode", stackEffect: "str -- strURLenconded", description: "Converts the string to URL encoded string"},
+			{name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},
+			{name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
 			{name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
 			{name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
 			{name: "http-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
@@ -342,14 +346,14 @@ const builtInFunc = {
 	"ms" : function() {
 		let isSuccess = true;
 		if(isPause) {
-			isPause = false;			
+			isPause = false;
 		}
 		else {
 			if(dataStack.length > 0) {
 				const t = dataStack.pop();			
 				isPause = true;
 				
-				setTimeout(function(){loadFile(saveLines, saveFullPath);}, t);
+				timeoutId = setTimeout(function(){loadFile(saveLines, saveFullPath);}, t);
 			}
 			else {
 				errorMessage = "expects a number in Data stack";
@@ -741,15 +745,23 @@ const builtInFunc = {
 					}
 					else {
 						const outList = d.split("\\n");
-						for (let i = 0; i < outList.length; i++) {
-							if(outList[i].length > 0) {
-								if(i < (outList.length - 1)) {
+						for (let i = 0; i < outList.length; i++) {							
+							if(i < (outList.length - 1)) {
+								if(outList[i].length > 0) {
 									outputChannel.appendLine(outList[i] + " ");
 								}
 								else {
-									outputChannel.append(outList[i] + " ");
+									outputChannel.appendLine("");
 								}
 							}
+							else {
+								if(outList[i].length > 0) {
+									outputChannel.append(outList[i] + " ");
+								}
+								else {
+									outputChannel.append("");
+								}								
+							}							
 						}
 					}					
 				}
@@ -774,13 +786,23 @@ const builtInFunc = {
 
 		outputChannel.append("D: ");
 		dataStack.forEach((item) => {
-			outputChannel.append("[" + item + "] ");
+			if(typeof item == "string") {
+				outputChannel.append("[\"" + item + "\"] ");
+			}
+			else {
+				outputChannel.append("[" + item + "] ");
+			}
 		});
 		
 		outputChannel.appendLine("");
 		outputChannel.append("R: ");
 		returnStack.forEach((item) => {
-			outputChannel.append("[" + item + "] ");
+			if(typeof item == "string") {
+				outputChannel.append("[\"" + item + "\"] ");
+			}
+			else {
+				outputChannel.append("[" + item + "] ");
+			}
 		});
 
 		outputChannel.appendLine("");
@@ -870,8 +892,8 @@ const builtInFunc = {
 		return isSuccess;
 	},
 	"timestamp" : function() {
-		let isSuccess = true;
-		dataStack.push(new Date().toLocaleString());
+		let isSuccess = true;		
+		dataStack.push(new Date().toLocaleString().split(',').join(''));
 		return isSuccess;
 	},
 	"open-file" : function() {
@@ -1145,6 +1167,53 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
+	"to-num" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const str = dataStack.pop();			
+			if(typeof str == "string") {
+				if(str.indexOf('.') != -1) {
+					dataStack.push(parseFloat(str));
+				}
+				else {
+					dataStack.push(parseInt(str, 10));
+				}
+			}
+			else {
+				errorMessage = "expects a string to be converted";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"to-str" : function() {
+		let isSuccess = true;
+		let decimal = 0;
+		if(dataStack.length > 1 && typeof dataStack[dataStack.length-1] == "number") {
+			decimal = dataStack.pop();
+		}
+
+		if(dataStack.length > 0) {
+			const number = dataStack.pop();
+			if(typeof number == "number") {
+				dataStack.push(Number(number).toFixed(decimal));
+			}
+			else {
+				errorMessage = "expects a number to be converted";
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects one number or two numbers in Data stack";
+			isSuccess = false;
+		}
+
+		return isSuccess;
+	},
 	"http-get" : function() {
 		let isSuccess = true;
 		if(isPause) {
@@ -1327,9 +1396,9 @@ function ksExecute(codeIdx) {
 		returnStack.push(PC);
 	}
 
-	while(isOK) {
+	while(isOK && !isEscape) {
 		isOK = codeArray[PC].exec();
-		if(isPause || returnStack.length == 0) {
+		if(isEscape || isPause || returnStack.length == 0) {
 			break;
 		}
 	}
@@ -1731,14 +1800,14 @@ function loadFile(lines, fullPath) {
 
 	funcDesc_pushTitle(fileName);
 
-	for (let currRow = initRow; isOK && currRow < lines.length; currRow++) {
+	for (let currRow = initRow; isOK && !isEscape && currRow < lines.length; currRow++) {
 		const words = lines[currRow].split(/(\s+)/).filter(Boolean);
 		// Check for unused tags
 		if(words.length > 0 && words[words.length-1].trim().length == 0) {
 			isOK = false;
 			errorMessage = "Unused tag (whitespace) found"
 		}
-		for (let currCol = initCol; isOK && currCol < words.length; currCol++) {
+		for (let currCol = initCol; isOK && !isEscape && currCol < words.length; currCol++) {
 			const wordLen = words[currCol].length;
 			if(wordLen > 0) {
 				if(isSkip) {
@@ -2294,6 +2363,18 @@ function funcDesc_pushDesc(title, desc) {
 	}
 }
 
+function escapeKey() {
+	isEscape = true;
+
+	if(timeoutId != 0) {
+		outputChannel.appendLine("ESC");
+		clearTimeout(timeoutId);
+		timeoutId = 0;
+	}
+}
+
+
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
@@ -2333,6 +2414,7 @@ function activate(context) {
 		isVerbose = vscode.workspace.getConfiguration("kolorScript").get("verboseLoading");
 		isPrintOut = false;
 		isPause = false;
+		isEscape = false;
 
 		loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
 	});
@@ -2355,11 +2437,16 @@ function activate(context) {
 		showWords();
 	});
 
+	let ks_escape = vscode.commands.registerCommand('kolorScript.escapeKey', function () {
+		escapeKey();
+	});
+
 	context.subscriptions.push(ks_loadFile);
 	context.subscriptions.push(ks_toggleColorBlind);
 	context.subscriptions.push(ks_toggleLightTheme);
 	context.subscriptions.push(ks_executeWords);
 	context.subscriptions.push(ks_showWords);
+	context.subscriptions.push(ks_escape);
 }
 
 // This method is called when your extension is deactivated
