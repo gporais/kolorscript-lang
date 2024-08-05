@@ -2,7 +2,7 @@
   "name": "kolorscript-lang",
   "displayName": "kolorScript",
   "description": "A modern variant of colorForth",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publisher": "gporais",
   "author": {
 		"email": "orais.georgephillip@gmail.com",
@@ -59,6 +59,10 @@
     {
       "key": "f9",
       "command": "kolorScript.toggleLightTheme"
+    },
+    {
+      "key": "escape",
+      "command": "kolorScript.escapeKey"
     }],
 	"languages": [{
       "id": "kolorscript",
