@@ -225,4 +225,9 @@ Initial release of kolorScript
 
 Fixed README.md to consider Marketplace markdown
 
+### 1.1.0
+
+* Added 12 new words (including http-get and http-post)
+* Bug fixes
+
 ---
