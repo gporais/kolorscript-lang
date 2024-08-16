@@ -209,12 +209,6 @@ Description:
 ## Examples
 (Link to be followed)
 
-## To be implemented
-* Arrays
-* Inputs: get-num, get-str 
-* Files: write-line, path normalization
-* HTTP: Basic server and client
-
 ## Release Notes
 
 ### 1.0.0
@@ -229,5 +223,9 @@ Fixed README.md to consider Marketplace markdown
 
 * Added 12 new words (including http-get and http-post)
 * Bug fixes
+
+### 1.1.1
+
+* Fix on path normalization for 'load' and 'open-file'
 
 ---
