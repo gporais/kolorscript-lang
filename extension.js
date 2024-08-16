@@ -673,7 +673,7 @@ const builtInFunc = {
 						td = d.split('\\').join('/');
 					}				
 
-					tfpp = fp.substring(0, fp.lastIndexOf("/") + 1) + td;
+					tfpp = path.normalize(curFullPath[curFullPath.length - 1].substring(0, curFullPath[curFullPath.length - 1].lastIndexOf("/") + 1) + td);
 					tfp = tfpp;
 				}
 				else {
@@ -682,7 +682,7 @@ const builtInFunc = {
 						td = d.split('/').join('\\');
 					}				
 
-					tfpp = fp.substring(0, fp.lastIndexOf("\\") + 1) + td;
+					tfpp = path.normalize(curFullPath[curFullPath.length - 1].substring(0, curFullPath[curFullPath.length - 1].lastIndexOf("\\") + 1) + td);
 					tfp = tfpp.split('\\').join('\\\\');
 				}
 
@@ -911,7 +911,7 @@ const builtInFunc = {
 					td = d.split('\\').join('/');
 				}				
 
-				tfpp = fp.substring(0, fp.lastIndexOf("/") + 1) + td;
+				tfpp = path.normalize(curFullPath[curFullPath.length - 1].substring(0, curFullPath[curFullPath.length - 1].lastIndexOf("/") + 1) + td);
 				tfp = tfpp;
 			}
 			else {
@@ -920,7 +920,7 @@ const builtInFunc = {
 					td = d.split('/').join('\\');
 				}				
 
-				tfpp = fp.substring(0, fp.lastIndexOf("\\") + 1) + td;
+				tfpp = path.normalize(curFullPath[curFullPath.length - 1].substring(0, curFullPath[curFullPath.length - 1].lastIndexOf("\\") + 1) + td);
 				tfp = tfpp.split('\\').join('\\\\');
 			}
 
