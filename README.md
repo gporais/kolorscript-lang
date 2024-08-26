@@ -228,4 +228,11 @@ Fixed README.md to consider Marketplace markdown
 
 * Fix on path normalization for 'load' and 'open-file'
 
+### 1.1.2
+
+* Added: round, time12H, time24H, floor, padStart, padEnd
+* Fixed: open-file, split-str
+* Improved: if, -if, to-str
+* Variables can store multiple values
+
 ---

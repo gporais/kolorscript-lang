@@ -4,6 +4,21 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.2] - 2024-08-23
+
+### Added
+
+- round, time12H, time24H, floor, padStart, padEnd
+
+### Fixed
+
+- open-file, split-str
+
+### Improved
+
+- if, -if, to-str
+- Variables can store multiple values
+
 ## [1.1.1] - 2024-08-16
 
 ### Fixed
