@@ -343,6 +343,21 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
+	"round" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 1) {
+			const decimalPlaces = dataStack.pop();
+			const num = dataStack.pop();
+			var p = Math.pow(10, decimalPlaces);
+			var n = (num * p) * (1 + Number.EPSILON);			
+			dataStack.push(Math.round(n) / p);
+		}
+		else {
+			errorMessage = "expects two values in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
 	"ms" : function() {
 		let isSuccess = true;
 		if(isPause) {
@@ -464,18 +479,12 @@ const builtInFunc = {
 	"if" : function(addr) {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
-			const t = dataStack.pop();
-			if(isNaN(t)) {
-				errorMessage = "top value of Data stack is not a number";
-				isSuccess = false;
+			const t = dataStack.pop();			
+			if(t == 0) {
+				PC = addr;
 			}
 			else {
-				if(t == 0) {
-					PC = addr;
-				}
-				else {
-					PC++;
-				}
+				PC++;
 			}
 		}
 		else {
@@ -487,19 +496,13 @@ const builtInFunc = {
 	"-if" : function(addr) {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
-			const t = dataStack.pop();
-			if(isNaN(t)) {
-				errorMessage = "top value of Data stack is not a number";
-				isSuccess = false;
+			const t = dataStack.pop();			
+			if(t >= 0) {
+				PC = addr;
 			}
 			else {
-				if(t >= 0) {
-					PC = addr;
-				}
-				else {
-					PC++;
-				}
-			}
+				PC++;
+			}			
 		}
 		else {
 			errorMessage = "expects a value in Data stack";
@@ -896,6 +899,16 @@ const builtInFunc = {
 		dataStack.push(new Date().toLocaleString().split(',').join(''));
 		return isSuccess;
 	},
+	"time12H" : function() {
+		let isSuccess = true;		
+		dataStack.push(new Date().toLocaleTimeString([], { hour12: true, hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+		return isSuccess;
+	},
+	"time24H" : function() {
+		let isSuccess = true;		
+		dataStack.push(new Date().toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+		return isSuccess;
+	},
 	"open-file" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
@@ -988,7 +1001,7 @@ const builtInFunc = {
 
 								fdStack[i].pos = endPos;
 
-								if(newPos) {									
+								if(newPos || endPos == fdStack[i].numBytesRead) {									
 									break;
 								}								
 							}
@@ -1059,12 +1072,32 @@ const builtInFunc = {
 		dataStack.push(dataStack.length);
 		return isSuccess;
 	},
+	"floor" : function() {
+		let isSuccess = true;
+		const num = dataStack.pop();
+		dataStack.push(Math.floor(num))
+		return isSuccess;
+	},
+	"padStart" : function() {
+		let isSuccess = true;
+		const places = dataStack.pop();
+		const str = dataStack.pop();
+		dataStack.push(str.padStart(places, ' '))
+		return isSuccess;
+	},
+	"padEnd" : function() {
+		let isSuccess = true;
+		const places = dataStack.pop();
+		const str = dataStack.pop();
+		dataStack.push(str.padEnd(places, ' '))
+		return isSuccess;
+	},
 	"split-str" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 1) {
 			const sep = dataStack.pop();
 			const str = dataStack.pop();
-			if(isNaN(parseInt(sep))) {
+			if(isNaN(sep)) {
 				if(isNaN(str)) {
 					const splitted = str.split(sep);
 					splitted.forEach((element) => dataStack.push(element));
@@ -1193,14 +1226,29 @@ const builtInFunc = {
 	"to-str" : function() {
 		let isSuccess = true;
 		let decimal = 0;
+		let places = 0;
+		let isDecimal = true;
 		if(dataStack.length > 1 && typeof dataStack[dataStack.length-1] == "number") {
 			decimal = dataStack.pop();
+			places = decimal;
+			let decStr = decimal.toString();
+			if(decStr.indexOf('.') != -1) {
+				decimal = parseInt(decStr.split('.')[1], 10)
+			}
+			else {				
+				isDecimal = false;
+			}
 		}
 
 		if(dataStack.length > 0) {
 			const number = dataStack.pop();
 			if(typeof number == "number") {
-				dataStack.push(Number(number).toFixed(decimal));
+				if(isDecimal) {
+					dataStack.push(Number(number).toFixed(decimal));
+				}
+				else {
+					dataStack.push(String(number).padStart(places, '0'));
+				}
 			}
 			else {
 				errorMessage = "expects a number to be converted";
@@ -1535,7 +1583,7 @@ function ksCompile(codeWord) {
 			// Create object that push literal number to data stack
 			codeArray.push({type: Types.KS_TPYE_USERDEF_CONST, val: num});
 
-			// User defined variable initialized, return to Interpret state
+			// User defined constant initialized, return to Interpret state
 			currState = States.KS_STATE_INTERPRET;
 			printMsg("OK", true);
 		}
@@ -1544,7 +1592,7 @@ function ksCompile(codeWord) {
 			codeArray.push({type: Types.KS_TYPE_USERDEF_VAR, val: num});
 
 			// User defined variable initialized, return to Interpret state
-			currState = States.KS_STATE_INTERPRET;
+			//currState = States.KS_STATE_INTERPRET;
 			printMsg("OK", true);
 		}
 		else {
@@ -1560,7 +1608,7 @@ function ksCompile(codeWord) {
 				// Create object that push literal string to data stack
 				codeArray.push({type: Types.KS_TPYE_USERDEF_CONST, val: str});
 	
-				// User defined variable initialized, return to Interpret state
+				// User defined constant initialized, return to Interpret state
 				currState = States.KS_STATE_INTERPRET;
 				printMsg("OK", true);
 			}
@@ -1569,7 +1617,7 @@ function ksCompile(codeWord) {
 				codeArray.push({type: Types.KS_TYPE_USERDEF_VAR, val: str});
 	
 				// User defined variable initialized, return to Interpret state
-				currState = States.KS_STATE_INTERPRET;
+				//currState = States.KS_STATE_INTERPRET;
 				printMsg("OK", true);
 			}
 			else {
@@ -2138,11 +2186,15 @@ function loadFile(lines, fullPath) {
 
 		if(isOK && currState == States.KS_STATE_COMPILE_VAR) {
 			if(dataStack.length > 0) {
-				let d = dataStack.pop();
-				if(isNaN(d)) {
-					d = "\"" + d + "\"";
+				while(dataStack.length > 0) {
+					let d = dataStack.shift();
+					if(isNaN(d)) {
+						d = "\"" + d + "\"";
+					}
+					isOK = ksCompile(d);
 				}
-				isOK = ksCompile(d);
+				// User defined variable initialized, return to Interpret state
+				currState = States.KS_STATE_INTERPRET;
 			}
 			else {
 				// Error data stack is empty
