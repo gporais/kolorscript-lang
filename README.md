@@ -235,4 +235,7 @@ Fixed README.md to consider Marketplace markdown
 * Improved: if, -if, to-str
 * Variables can store multiple values
 
+### 1.1.3
+
+* Added: overwrite, lb<, lb
 ---

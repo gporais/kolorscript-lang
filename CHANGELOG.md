@@ -4,6 +4,12 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.3] - 2024-08-29
+
+### Added
+
+- overwrite, lb<, lb
+
 ## [1.1.2] - 2024-08-23
 
 ### Added
