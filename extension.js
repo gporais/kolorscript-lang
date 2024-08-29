@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 const outputChannel = vscode.window.createOutputChannel("KolorScript");
-const { readFileSync } = require('fs');
+const { readFileSync, writeSync } = require('fs');
 const { readdirSync } = require('fs');
 const { lstatSync } = require('fs');
 const { openSync } = require('fs');
@@ -984,7 +984,7 @@ const builtInFunc = {
 			}
 
 			try {
-				let fd = openSync(tfp);
+				let fd = openSync(tfp,'rs+');
 				dataStack.push(fd);
 				fdStack.push({fid: fd, pos: 0, numBytesRead: 0, totalBytesRead: 0, buff: Buffer.alloc(buffSize), fsize: fstatSync(fd).size});				
 			} catch(error) {
@@ -1084,6 +1084,25 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
+	"writeLine" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 0) {
+			const fd = dataStack.pop();
+			const position = dataStack.pop();
+			const data = dataStack.pop();			
+			try {
+				writeSync(fd, data, position);				
+			} catch (error) {
+				errorMessage = "Unable to write fd: " + fd;
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects a value in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
 	"close-file" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
@@ -1122,6 +1141,16 @@ const builtInFunc = {
 		let isSuccess = true;
 		const num = dataStack.pop();
 		dataStack.push(Math.floor(num))
+		return isSuccess;
+	},
+	"cr" : function() {
+		let isSuccess = true;
+		if(isNix) {
+			dataStack.push('\n')
+		}
+		else {
+			dataStack.push('\r\n')
+		}		
 		return isSuccess;
 	},
 	"padStart" : function() {
