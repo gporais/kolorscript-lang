@@ -44,6 +44,8 @@ let isVerbose = false;
 let isPause = false;
 let isEscape = false;
 let timeoutId = 0;
+let lineBuff = "";
+let isOverwrite = false;
 
 let savePre = 0;
 let savePost = 0;
@@ -744,12 +746,27 @@ const builtInFunc = {
 			if(isNaN(d)) {
 				if(d.trim().length > 0) {
 					if(d.trim() === "\\n") {
-						outputChannel.appendLine("");
+						if (isOverwrite) {
+							outputChannel.replace("");
+						}
+						else {
+							outputChannel.appendLine("");
+						}
 					}
 					else {
 						const outList = d.split("\\n");
 						for (let i = 0; i < outList.length; i++) {							
-							if(i < (outList.length - 1)) {
+							if(isOverwrite && i == 0) {
+								if(outList[i].length > 0) {
+									outputChannel.replace(outList[i] + " ");
+									outputChannel.appendLine("");
+								}
+								else {
+									outputChannel.replace("");
+									outputChannel.appendLine("");
+								}
+							}
+							else if(i < (outList.length - 1)) {
 								if(outList[i].length > 0) {
 									outputChannel.appendLine(outList[i] + " ");
 								}
@@ -770,9 +787,15 @@ const builtInFunc = {
 				}
 			}
 			else {
-				outputChannel.append(d + " ");
+				if (isOverwrite) {
+					outputChannel.replace(d + " ");
+				}
+				else {
+					outputChannel.append(d + " ");
+				}				
 			}			
 			isPrintOut = true;
+			isOverwrite = false;
 		}
 		else {
 			errorMessage = "expects a value in Data stack";
@@ -907,6 +930,29 @@ const builtInFunc = {
 	"time24H" : function() {
 		let isSuccess = true;		
 		dataStack.push(new Date().toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+		return isSuccess;
+	},
+	"lb<" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 0) {
+			const t = dataStack.pop();
+			lineBuff += t;
+		}
+		else {
+			errorMessage = "expects a value in Data stack";
+			isSuccess = false;
+		}		
+		return isSuccess;
+	},
+	"overwrite" : function() {
+		let isSuccess = true;
+		isOverwrite = true;
+		return isSuccess;
+	},
+	"lb" : function() {
+		let isSuccess = true;
+		dataStack.push(lineBuff);
+		lineBuff = "";
 		return isSuccess;
 	},
 	"open-file" : function() {
@@ -2459,6 +2505,7 @@ function activate(context) {
 
 		funcDesc = [ ...builtInDesc ];
 		outputChannel.clear();
+		lineBuff = "";
 		codeArray.length = 0;
 		dictionaryObj = { ...builtInFunc };
 		fp = activeTextEditor.document.uri.fsPath;
