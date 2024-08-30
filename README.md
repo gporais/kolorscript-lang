@@ -238,4 +238,10 @@ Fixed README.md to consider Marketplace markdown
 ### 1.1.3
 
 * Added: overwrite, lb<, lb
+
+### 1.1.4
+
+* Added: writeAt, cr
+* Improved: read-line, .
+* Handler for F2 while running
 ---

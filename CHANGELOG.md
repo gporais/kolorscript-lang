@@ -4,6 +4,17 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.4] - 2024-08-30
+
+### Added
+
+- writeAt, cr
+
+### Improved
+
+- read-line, .
+- Handler for F2 while running
+
 ## [1.1.3] - 2024-08-29
 
 ### Added
