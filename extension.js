@@ -1039,7 +1039,7 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"writeLine" : function() {
+	"writeAt" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const fd = dataStack.pop();
