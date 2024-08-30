@@ -969,6 +969,7 @@ const builtInFunc = {
 							let newLine = false;
 							let newPos = false;
 							let strLine = "";
+							let eolLen = 1;
 
 							while(fdStack[i].totalBytesRead <= fdStack[i].fsize) {
 								if(fdStack[i].numBytesRead == fdStack[i].pos) {
@@ -982,7 +983,9 @@ const builtInFunc = {
 
 								for(; endPos <  fdStack[i].numBytesRead; endPos++) {
 									if(fdStack[i].buff[endPos] == 0x0a || fdStack[i].buff[endPos] == 0x0d) {
-	
+										if(fdStack[i].buff[endPos] == 0x0d && fdStack[i].buff[endPos+1] == 0x0a) {
+											eolLen++;
+										}
 										newLine = true;
 										break;
 									}
@@ -1009,6 +1012,7 @@ const builtInFunc = {
 
 							dataStack.push(strLine);
 							dataStack.push(strLine.length);
+							dataStack.push(eolLen);
 							break;
 						}
 					}
