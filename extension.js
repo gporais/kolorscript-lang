@@ -743,57 +743,12 @@ const builtInFunc = {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const d = dataStack.pop();
-			if(isNaN(d)) {
-				if(d.trim().length > 0) {
-					if(d.trim() === "\\n") {
-						if (isOverwrite) {
-							outputChannel.replace("");
-						}
-						else {
-							outputChannel.appendLine("");
-						}
-					}
-					else {
-						const outList = d.split("\\n");
-						for (let i = 0; i < outList.length; i++) {							
-							if(isOverwrite && i == 0) {
-								if(outList[i].length > 0) {
-									outputChannel.replace(outList[i] + " ");
-									outputChannel.appendLine("");
-								}
-								else {
-									outputChannel.replace("");
-									outputChannel.appendLine("");
-								}
-							}
-							else if(i < (outList.length - 1)) {
-								if(outList[i].length > 0) {
-									outputChannel.appendLine(outList[i] + " ");
-								}
-								else {
-									outputChannel.appendLine("");
-								}
-							}
-							else {
-								if(outList[i].length > 0) {
-									outputChannel.append(outList[i] + " ");
-								}
-								else {
-									outputChannel.append("");
-								}								
-							}							
-						}
-					}					
-				}
+			if (isOverwrite) {
+				outputChannel.replace(d + " ");
 			}
 			else {
-				if (isOverwrite) {
-					outputChannel.replace(d + " ");
-				}
-				else {
-					outputChannel.append(d + " ");
-				}				
-			}			
+				outputChannel.append(d + " ");
+			}		
 			isPrintOut = true;
 			isOverwrite = false;
 		}
@@ -2492,6 +2447,7 @@ function funcDesc_pushDesc(title, desc) {
 
 function escapeKey() {
 	isEscape = true;
+	isPause = false;
 
 	if(timeoutId != 0) {
 		outputChannel.appendLine("ESC");
@@ -2527,24 +2483,26 @@ function activate(context) {
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
 	let ks_loadFile = vscode.commands.registerCommand('kolorScript.loadFile', function () {
-		// The code you place here will be executed every time your command is executed
-		//const activeTextEditor = vscode.window.activeTextEditor;
-		const { activeTextEditor } = vscode.window;
-		if (!activeTextEditor) return;
+		if(!isPause) {
+			// The code you place here will be executed every time your command is executed
+			//const activeTextEditor = vscode.window.activeTextEditor;
+			const { activeTextEditor } = vscode.window;
+			if (!activeTextEditor) return;
 
-		funcDesc = [ ...builtInDesc ];
-		outputChannel.clear();
-		lineBuff = "";
-		codeArray.length = 0;
-		dictionaryObj = { ...builtInFunc };
-		fp = activeTextEditor.document.uri.fsPath;
+			funcDesc = [ ...builtInDesc ];
+			outputChannel.clear();
+			lineBuff = "";
+			codeArray.length = 0;
+			dictionaryObj = { ...builtInFunc };
+			fp = activeTextEditor.document.uri.fsPath;
 
-		isVerbose = vscode.workspace.getConfiguration("kolorScript").get("verboseLoading");
-		isPrintOut = false;
-		isPause = false;
-		isEscape = false;
+			isVerbose = vscode.workspace.getConfiguration("kolorScript").get("verboseLoading");
+			isPrintOut = false;
+			isPause = false;
+			isEscape = false;
 
-		loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
+			loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
+		}
 	});
 
 	let ks_toggleColorBlind = vscode.commands.registerCommand('kolorScript.toggleColorBlind', function () {
