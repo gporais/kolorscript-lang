@@ -904,6 +904,40 @@ const builtInFunc = {
 		isOverwrite = true;
 		return isSuccess;
 	},
+	"nix?" : function() {
+		let isSuccess = true;
+		if(isNix) {
+			dataStack.push(1);
+		}
+		else {
+			dataStack.push(0);
+		}
+		return isSuccess;
+	},
+	"strLen" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 0) {
+			const data = dataStack.pop();
+			if(typeof data == "string") {
+				try {
+					const len = data.length;
+					dataStack.push(len);
+				} catch (error) {
+					errorMessage = "Unable to get length of: " + data;
+					isSuccess = false;
+				}
+			}
+			else {
+				errorMessage = "expects a string in Data stack";
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
 	"lb" : function() {
 		let isSuccess = true;
 		dataStack.push(lineBuff);
