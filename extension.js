@@ -904,14 +904,9 @@ const builtInFunc = {
 		isOverwrite = true;
 		return isSuccess;
 	},
-	"nix?" : function() {
+	"lbLen" : function() {
 		let isSuccess = true;
-		if(isNix) {
-			dataStack.push(1);
-		}
-		else {
-			dataStack.push(0);
-		}
+		dataStack.push(lineBuff.length);
 		return isSuccess;
 	},
 	"strLen" : function() {
@@ -987,7 +982,7 @@ const builtInFunc = {
 		}			
 		return isSuccess;
 	},
-	"read-line" : function() {
+	"readLine" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const fd = dataStack.pop();
@@ -1002,8 +997,7 @@ const builtInFunc = {
 							let endPos = 0;
 							let newLine = false;
 							let newPos = false;
-							let strLine = "";
-							let eolLen = 1;
+							let strLine = "";							
 
 							while(fdStack[i].totalBytesRead <= fdStack[i].fsize) {
 								if(fdStack[i].numBytesRead == fdStack[i].pos) {
@@ -1017,15 +1011,10 @@ const builtInFunc = {
 
 								for(; endPos <  fdStack[i].numBytesRead; endPos++) {
 									if(fdStack[i].buff[endPos] == 0x0a || fdStack[i].buff[endPos] == 0x0d) {
-										if(fdStack[i].buff[endPos] == 0x0d && fdStack[i].buff[endPos+1] == 0x0a) {
-											eolLen++;
-										}
 										newLine = true;
 										break;
 									}
-								}
-
-								strLine += fdStack[i].buff.toString('ascii', startPos, endPos);
+								}								
 	
 								if(newLine) {
 									//find next pos
@@ -1037,6 +1026,8 @@ const builtInFunc = {
 									}
 								}
 
+								strLine += fdStack[i].buff.toString('ascii', startPos, endPos);
+
 								fdStack[i].pos = endPos;
 
 								if(newPos || endPos == fdStack[i].numBytesRead) {									
@@ -1046,7 +1037,6 @@ const builtInFunc = {
 
 							dataStack.push(strLine);
 							dataStack.push(strLine.length);
-							dataStack.push(eolLen);
 							break;
 						}
 					}
@@ -1160,13 +1150,14 @@ const builtInFunc = {
 		dataStack.push(str.padEnd(places, ' '))
 		return isSuccess;
 	},
-	"split-str" : function() {
+	"splitStr" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 1) {
 			const sep = dataStack.pop();
-			const str = dataStack.pop();
-			if(isNaN(sep)) {
-				if(isNaN(str)) {
+			let str = dataStack.pop();
+			if(typeof sep == "string") {
+				if(typeof str == "string") {
+					str = str.replace(/(\r\n|\n|\r)/gm,"");
 					const splitted = str.split(sep);
 					splitted.forEach((element) => dataStack.push(element));
 					dataStack.push(splitted.length);
