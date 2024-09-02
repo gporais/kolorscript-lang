@@ -1133,7 +1133,7 @@ const builtInFunc = {
 		}
 		else {
 			dataStack.push('\r\n')
-		}		
+		}
 		return isSuccess;
 	},
 	"padStart" : function() {
@@ -1891,11 +1891,11 @@ function loadFile(lines, fullPath) {
 		PC = 0;
 		currState = States.KS_STATE_INTERPRET;
 
-		dataStack.length = 0;
-		returnStack.length = 0;
-		ifStack.length = 0;
-		forStack.length = 0;
-		fdStack.length = 0;
+		// dataStack.length = 0;
+		// returnStack.length = 0;
+		// ifStack.length = 0;
+		// forStack.length = 0;
+		// fdStack.length = 0;
 	}
 
 	if(isNix) {
@@ -2485,6 +2485,48 @@ function escapeKey() {
 	}
 }
 
+function goToDefinition() {	
+	const editor = vscode.window.activeTextEditor;
+	const selection = editor.selection;
+	if (selection && !selection.isEmpty) {
+		const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
+		const highlighted = editor.document.getText(selectionRange);		
+
+		if(!isNaN(highlighted)) {
+			outputChannel.replace(highlighted + " is a Number");
+		}
+		else {
+			if((highlighted[0] == "'" && highlighted[highlighted.length - 1] == "'") || (highlighted[0] == "\"" && highlighted[highlighted.length - 1] == "\"")) {
+				outputChannel.replace(highlighted + " is a String");
+			}
+			else {
+				if(dictionaryObj[highlighted] != null) {
+					if(typeof dictionaryObj[highlighted] === 'function') {
+						outputChannel.replace("Definition of \'");
+						outputChannel.appendLine(highlighted + "\'");
+						outputChannel.appendLine(builtInFunc[highlighted].toString());
+					}
+					else if(typeof dictionaryObj[highlighted] === 'number') {
+						outputChannel.replace("Go to FUNCTION definition still under development");
+					}
+					else {
+						if(dictionaryObj[highlighted].const) {
+							outputChannel.replace("Go to CONSTANT definition still under development");
+						}
+						else {
+							outputChannel.replace("Go to VARIABLE definition still under development");
+						}
+					}
+				}
+				else {
+					outputChannel.replace(highlighted + " is not recognized");
+				}
+			}
+		}
+
+	}
+}
+
 
 
 // This method is called when your extension is activated
@@ -2530,6 +2572,12 @@ function activate(context) {
 			isPause = false;
 			isEscape = false;
 
+			dataStack.length = 0;
+			returnStack.length = 0;
+			ifStack.length = 0;
+			forStack.length = 0;
+			fdStack.length = 0;
+
 			loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
 		}
 	});
@@ -2556,12 +2604,17 @@ function activate(context) {
 		escapeKey();
 	});
 
+	let ks_goToDefinition = vscode.commands.registerCommand('kolorScript.goToDefinition', function () {
+		goToDefinition();
+	});
+
 	context.subscriptions.push(ks_loadFile);
 	context.subscriptions.push(ks_toggleColorBlind);
 	context.subscriptions.push(ks_toggleLightTheme);
 	context.subscriptions.push(ks_executeWords);
 	context.subscriptions.push(ks_showWords);
 	context.subscriptions.push(ks_escape);
+	context.subscriptions.push(ks_goToDefinition);
 }
 
 // This method is called when your extension is deactivated

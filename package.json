@@ -39,7 +39,20 @@
     {
       "command": "kolorScript.toggleLightTheme",
       "title": "kolorScript: Toggle Light theme"
+    },
+    {
+      "command": "kolorScript.goToDefinition",
+      "title": "Go to definition"
     }],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "kolorScript.goToDefinition",
+          "group": "kolorscript",
+          "when": "editorTextFocus"
+        }
+      ]      
+    },
   "keybindings": [{
       "key": "f2",
       "command": "kolorScript.loadFile"
