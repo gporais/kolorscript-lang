@@ -4,6 +4,23 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.5] - 2024-09-02
+
+### Added
+
+- strLen, lbLen
+- Go to definition (still work in progress)
+
+### Improved
+
+- read-line
+- split-str
+
+### Renamed
+
+- read-line to readLine
+- split-str to splitStr
+
 ## [1.1.4] - 2024-08-30
 
 ### Added

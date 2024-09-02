@@ -244,4 +244,10 @@ Fixed README.md to consider Marketplace markdown
 * Added: writeAt, cr
 * Improved: read-line, .
 * Handler for F2 while running
+
+### 1.1.5
+
+* Added: strLen, lbLen
+* Renamed & improved: read-line, split-str
+* New feature: Go to definition (still work in progress)
 ---
