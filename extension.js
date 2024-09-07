@@ -1126,6 +1126,9 @@ const builtInFunc = {
 		dataStack.push(Math.floor(num))
 		return isSuccess;
 	},
+	"nop" : function() {
+		return true;
+	},
 	"cr" : function() {
 		let isSuccess = true;
 		if(isNix) {
