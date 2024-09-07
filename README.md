@@ -250,4 +250,10 @@ Fixed README.md to consider Marketplace markdown
 * Added: strLen, lbLen
 * Renamed & improved: read-line, split-str
 * New feature: Go to definition (still work in progress)
+
+### 1.1.6
+
+* Added: nop short-timestamp medium-timestamp long-timestamp
+* Renamed: lb< lbLen strLen lb readLine writeAt padStart padEnd splitStr
+* Removed: timestamp
 ---

@@ -4,6 +4,20 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.6] - 2024-09-08
+
+### Added
+
+- nop short-timestamp medium-timestamp long-timestamp
+
+### Renamed
+
+- lb< lbLen strLen lb readLine writeAt padStart padEnd splitStr
+
+### Removed
+
+- timestamp
+
 ## [1.1.5] - 2024-09-02
 
 ### Added
