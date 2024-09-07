@@ -872,9 +872,19 @@ const builtInFunc = {
 		dataStack.push(Date.now());
 		return isSuccess;
 	},
-	"timestamp" : function() {
+	"long-timestamp" : function() {
 		let isSuccess = true;		
-		dataStack.push(new Date().toLocaleString().split(',').join(''));
+		dataStack.push(new Date().toLocaleString([], { dateStyle: "long", timeStyle: "long" }).split(',').join(''));
+		return isSuccess;
+	},
+	"medium-timestamp" : function() {
+		let isSuccess = true;		
+		dataStack.push(new Date().toLocaleString([], { dateStyle: "medium", timeStyle: "medium" }).split(',').join(''));
+		return isSuccess;
+	},
+	"short-timestamp" : function() {
+		let isSuccess = true;		
+		dataStack.push(new Date().toLocaleString([], { dateStyle: "short", timeStyle: "short" }).split(',').join(''));
 		return isSuccess;
 	},
 	"time12H" : function() {
@@ -887,7 +897,7 @@ const builtInFunc = {
 		dataStack.push(new Date().toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }));
 		return isSuccess;
 	},
-	"lb<" : function() {
+	"linebuffer<" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const t = dataStack.pop();
@@ -904,12 +914,12 @@ const builtInFunc = {
 		isOverwrite = true;
 		return isSuccess;
 	},
-	"lbLen" : function() {
+	"linebuffer-len" : function() {
 		let isSuccess = true;
 		dataStack.push(lineBuff.length);
 		return isSuccess;
 	},
-	"strLen" : function() {
+	"str-len" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const data = dataStack.pop();
@@ -933,7 +943,7 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"lb" : function() {
+	"linebuffer" : function() {
 		let isSuccess = true;
 		dataStack.push(lineBuff);
 		lineBuff = "";
@@ -982,7 +992,7 @@ const builtInFunc = {
 		}			
 		return isSuccess;
 	},
-	"readLine" : function() {
+	"read-line" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const fd = dataStack.pop();
@@ -1067,7 +1077,7 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"writeAt" : function() {
+	"write-at" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
 			const fd = dataStack.pop();
@@ -1139,21 +1149,21 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"padStart" : function() {
+	"pad-start" : function() {
 		let isSuccess = true;
 		const places = dataStack.pop();
 		const str = dataStack.pop();
 		dataStack.push(str.padStart(places, ' '))
 		return isSuccess;
 	},
-	"padEnd" : function() {
+	"pad-end" : function() {
 		let isSuccess = true;
 		const places = dataStack.pop();
 		const str = dataStack.pop();
 		dataStack.push(str.padEnd(places, ' '))
 		return isSuccess;
 	},
-	"splitStr" : function() {
+	"split-str" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 1) {
 			const sep = dataStack.pop();
