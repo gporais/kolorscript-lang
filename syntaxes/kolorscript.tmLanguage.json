@@ -25,35 +25,12 @@
 		}
 	],
 	"repository": {
-		"invalids": {
-			"patterns": [
-				{
-					"name": "invalid.hexadecimal.kolorscript",
-					"match": "0(x|X)\\h+"
-				},
-				{
-					"name": "invalid.decimal.kolorscript",
-					"match": "-?\\d*\\.?\\d+"
-				},
-				{
-					"name": "invalid.punctuation.kolorscript",
-					"match": "([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
-				},
-				{
-					"name": "invalid.string.doublequote.kolorscript",
-					"match": "\".*?\""
-				},
-				{
-					"name": "invalid.string.singlequote.kolorscript",
-					"match": "'.*?'"
-				}
-			]
-		},
+
 		"defines": {
 			"patterns": [
 				{
 					"name": "define.word.kolorscript",
-					"match": "^\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*(?=   )"
+					"match": "^\\S+(?=   )"
 				}
 			]
 		},
@@ -61,7 +38,7 @@
 			"patterns": [
 				{
 					"name": "variable.word.kolorscript",
-					"match": "^\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*(?=  )"
+					"match": "^\\S+(?=  )"
 				}
 			]
 		},
@@ -69,7 +46,7 @@
 			"patterns": [
 				{
 					"name": "constant.word.kolorscript",
-					"match": "^\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*(?= )"
+					"match": "^\\S+(?= )"
 				}
 			]
 		},
@@ -82,15 +59,7 @@
 				{
 					"name": "comment.decimal.kolorscript",
 					"match": "   -?\\d*\\.?\\d+"
-				},
-				{
-					"name": "comment.word.kolorscript",
-					"match": "   [-|.]?\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*"
-				},
-				{
-					"name": "comment.punctuation.kolorscript",
-					"match": "   ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
-				},
+				},		
 				{
 					"name": "comment.string.doublequote.kolorscript",
 					"match": "   \".*\""
@@ -102,6 +71,10 @@
 				{
 					"name": "comment.group.kolorscript",
 					"match": "   \\(.*\\)"
+				},
+				{
+					"name": "comment.word.kolorscript",
+					"match": "   \\S+"
 				},
 				{
 					"name": "comment.line.kolorscript",
@@ -121,11 +94,7 @@
 				},
 				{
 					"name": "interpret.word.kolorscript",
-					"match": "  [-|.]?\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*"
-				},
-				{
-					"name": "interpret.punctuation.kolorscript",
-					"match": "  ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
+					"match": "  \\S+"
 				},
 				{
 					"name": "interpret.string.doublequote.kolorscript",
@@ -149,12 +118,8 @@
 				},
 				{
 					"name": "compile.word.kolorscript",
-					"match": " [-|.]?\\w+\\?*\\$*\\%*\\.*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\-*\\w*\\?*\\$*\\%*\\<*"
-				},
-				{
-					"name": "compile.punctuation.kolorscript",
-					"match": " ([*|/|+|\\-|;|@|.|!|>|<|=])+-?"
-				},
+					"match": " \\S+"
+				},				
 				{
 					"name": "compile.string.doublequote.kolorscript",
 					"match": " \".*?\""
@@ -162,6 +127,26 @@
 				{
 					"name": "compile.string.singlequote.kolorscript",
 					"match": " '.*?'"
+				}
+			]
+		},
+		"invalids": {
+			"patterns": [
+				{
+					"name": "invalid.hexadecimal.kolorscript",
+					"match": "0(x|X)\\h+"
+				},
+				{
+					"name": "invalid.decimal.kolorscript",
+					"match": "-?\\d*\\.?\\d+"
+				},
+				{
+					"name": "invalid.string.doublequote.kolorscript",
+					"match": "\".*?\""
+				},
+				{
+					"name": "invalid.string.singlequote.kolorscript",
+					"match": "'.*?'"
 				}
 			]
 		}
