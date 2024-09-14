@@ -2501,42 +2501,46 @@ function escapeKey() {
 function goToDefinition() {	
 	const editor = vscode.window.activeTextEditor;
 	const selection = editor.selection;
-	if (selection && !selection.isEmpty) {
-		const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
-		const highlighted = editor.document.getText(selectionRange);		
+	const pattern = new RegExp("\\S+");
 
-		if(!isNaN(highlighted)) {
-			outputChannel.replace(highlighted + " is a Number");
+	
+	let wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern);
+	if (!wordRange) {
+		return;
+	}
+
+	let wordText = editor.document.getText(wordRange);
+
+	if(!isNaN(wordText)) {
+		outputChannel.replace(wordText + " is a Number");
+	}
+	else {
+		if((wordText[0] == "'" && wordText[wordText.length - 1] == "'") || (wordText[0] == "\"" && wordText[wordText.length - 1] == "\"")) {
+			outputChannel.replace(wordText + " is a String");
 		}
 		else {
-			if((highlighted[0] == "'" && highlighted[highlighted.length - 1] == "'") || (highlighted[0] == "\"" && highlighted[highlighted.length - 1] == "\"")) {
-				outputChannel.replace(highlighted + " is a String");
-			}
-			else {
-				if(dictionaryObj[highlighted] != null) {
-					if(typeof dictionaryObj[highlighted] === 'function') {
-						outputChannel.replace("Definition of \'");
-						outputChannel.appendLine(highlighted + "\'");
-						outputChannel.appendLine(builtInFunc[highlighted].toString());
-					}
-					else if(typeof dictionaryObj[highlighted] === 'number') {
-						outputChannel.replace("Go to FUNCTION definition still under development");
-					}
-					else {
-						if(dictionaryObj[highlighted].const) {
-							outputChannel.replace("Go to CONSTANT definition still under development");
-						}
-						else {
-							outputChannel.replace("Go to VARIABLE definition still under development");
-						}
-					}
+			if(dictionaryObj[wordText] != null) {
+				if(typeof dictionaryObj[wordText] === 'function') {
+					outputChannel.replace("Definition of \'");
+					outputChannel.appendLine(wordText + "\'");
+					outputChannel.appendLine(builtInFunc[wordText].toString());
+				}
+				else if(typeof dictionaryObj[wordText] === 'number') {
+					outputChannel.replace("Go to FUNCTION definition still under development");
 				}
 				else {
-					outputChannel.replace(highlighted + " is not recognized");
+					if(dictionaryObj[wordText].const) {
+						outputChannel.replace("Go to CONSTANT definition still under development");
+					}
+					else {
+						outputChannel.replace("Go to VARIABLE definition still under development");
+					}
 				}
 			}
+			else {
+				outputChannel.replace(wordText + " is not recognized");
+			}
 		}
-
 	}
 }
 
