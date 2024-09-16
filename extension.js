@@ -1347,11 +1347,10 @@ const builtInFunc = {
 					fetch(url)
 					.then(response => {
 						if (!response.ok) {
-							errorMessage = "Network response was not ok";
+							errorMessage = "Network response was not ok: " + response.text();
 							isSuccess = false;
 							outputChannel.appendLine(errorMessage);
-						}
-						return response.text();						
+						}						
 					})
 					.then(data => {dataStack.push(data); loadFile(saveLines, saveFullPath);})
 					.catch(error => { errorMessage = "There has been a problem with your fetch operation: " + error;
