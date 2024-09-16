@@ -261,4 +261,7 @@ Fixed README.md to consider Marketplace markdown
 * Improved http-get
 * Improved go to definition
 * Improved syntax regex
+
+### 1.1.8
+* Fixed http-get
 ---

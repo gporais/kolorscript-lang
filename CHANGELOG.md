@@ -4,6 +4,12 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.8] - 2024-09-17
+
+### Fixed
+
+- http-get
+
 ## [1.1.7] - 2024-09-17
 
 ### Improved
