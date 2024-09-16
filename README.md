@@ -256,4 +256,9 @@ Fixed README.md to consider Marketplace markdown
 * Added: nop short-timestamp medium-timestamp long-timestamp
 * Renamed: lb< lbLen strLen lb readLine writeAt padStart padEnd splitStr
 * Removed: timestamp
+
+### 1.1.7
+* Improved http-get
+* Improved go to definition
+* Improved syntax regex
 ---
