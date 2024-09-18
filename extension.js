@@ -1036,11 +1036,11 @@ const builtInFunc = {
 									}
 								}
 
-								strLine += fdStack[i].buff.toString('ascii', startPos, endPos);
+								strLine += fdStack[i].buff.toString('ascii', startPos, endPos);								
 
 								fdStack[i].pos = endPos;
 
-								if(newPos || endPos == fdStack[i].numBytesRead) {									
+								if(newPos || (endPos == fdStack[i].numBytesRead && fdStack[i].totalBytesRead == fdStack[i].fsize)) {
 									break;
 								}								
 							}
@@ -1172,7 +1172,7 @@ const builtInFunc = {
 				if(typeof str == "string") {
 					str = str.replace(/(\r\n|\n|\r)/gm,"");
 					const splitted = str.split(sep);
-					splitted.forEach((element) => dataStack.push(element));
+					splitted.forEach((element) => dataStack.push(element.trim()));
 					dataStack.push(splitted.length);
 				}
 				else {
