@@ -4,6 +4,12 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.9] - 2024-09-19
+
+- Add trim to split-str
+- Fix read-line
+- Fix syntax regex
+
 ## [1.1.8] - 2024-09-17
 
 ### Fixed

@@ -264,4 +264,9 @@ Fixed README.md to consider Marketplace markdown
 
 ### 1.1.8
 * Fixed http-get
+
+### 1.1.9
+* Add trim to split-str
+* Fix read-line
+* Fix syntax regex
 ---
