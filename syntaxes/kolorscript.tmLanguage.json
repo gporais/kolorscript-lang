@@ -93,16 +93,16 @@
 					"match": "  -?\\d*\\.?\\d+"
 				},
 				{
-					"name": "interpret.word.kolorscript",
-					"match": "  \\S+"
-				},
-				{
 					"name": "interpret.string.doublequote.kolorscript",
-					"match": "  \".*?\""
+					"match": "  \".*\""
 				},
 				{
 					"name": "interpret.string.singlequote.kolorscript",
-					"match": "  '.*?'"
+					"match": "  '.*'"
+				},
+				{
+					"name": "interpret.word.kolorscript",
+					"match": "  \\S+"
 				}
 			]
 		},
@@ -115,18 +115,18 @@
 				{
 					"name": "compile.decimal.kolorscript",
 					"match": " -?\\d*\\.?\\d+"
+				},				
+				{
+					"name": "compile.string.doublequote.kolorscript",
+					"match": " \".*\""
+				},
+				{
+					"name": "compile.string.singlequote.kolorscript",
+					"match": " '.*'"
 				},
 				{
 					"name": "compile.word.kolorscript",
 					"match": " \\S+"
-				},				
-				{
-					"name": "compile.string.doublequote.kolorscript",
-					"match": " \".*?\""
-				},
-				{
-					"name": "compile.string.singlequote.kolorscript",
-					"match": " '.*?'"
 				}
 			]
 		},
@@ -142,11 +142,11 @@
 				},
 				{
 					"name": "invalid.string.doublequote.kolorscript",
-					"match": "\".*?\""
+					"match": "\".*\""
 				},
 				{
 					"name": "invalid.string.singlequote.kolorscript",
-					"match": "'.*?'"
+					"match": "'.*'"
 				}
 			]
 		}
