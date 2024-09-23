@@ -269,4 +269,7 @@ Fixed README.md to consider Marketplace markdown
 * Add trim to split-str
 * Fix read-line
 * Fix syntax regex
+
+### 1.1.10
+* Added: >= <=
 ---
