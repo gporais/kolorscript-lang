@@ -574,6 +574,46 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
+	">=" : function() {
+		let isSuccess = true;
+		const dsLen = dataStack.length;
+		if(dsLen > 1) {
+			const t = dataStack[dsLen-1];
+			const s = dataStack[dsLen-2];
+			if(s >= t) {
+				dataStack.push(1);
+			}
+			else {
+				dataStack.push(0);
+			}
+			
+		}
+		else {
+			errorMessage = "expects two values in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"<=" : function() {
+		let isSuccess = true;
+		const dsLen = dataStack.length;
+		if(dsLen > 1) {
+			const t = dataStack[dsLen-1];
+			const s = dataStack[dsLen-2];
+			if(s <= t) {
+				dataStack.push(1);
+			}
+			else {
+				dataStack.push(0);
+			}
+			
+		}
+		else {
+			errorMessage = "expects two values in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
 	"for" : function() {
 		let isSuccess = true;
 		if(dataStack.length > 0) {
