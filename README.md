@@ -272,4 +272,8 @@ Fixed README.md to consider Marketplace markdown
 
 ### 1.1.10
 * Added: >= <=
+
+### 1.1.11
+* Fix str-len
+* Fix variable initialization
 ---
