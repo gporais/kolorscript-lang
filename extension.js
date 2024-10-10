@@ -961,8 +961,9 @@ const builtInFunc = {
 	},
 	"str-len" : function() {
 		let isSuccess = true;
-		if(dataStack.length > 0) {
-			const data = dataStack.pop();
+		const dsLen = dataStack.length;
+		if(dsLen > 0) {
+			const data = dataStack[dsLen-1];
 			if(typeof data == "string") {
 				try {
 					const len = data.length;
@@ -2300,7 +2301,7 @@ function loadFile(lines, fullPath) {
 			if(dataStack.length > 0) {
 				while(dataStack.length > 0) {
 					let d = dataStack.shift();
-					if(isNaN(d)) {
+					if(typeof d === 'string' ) {
 						d = "\"" + d + "\"";
 					}
 					isOK = ksCompile(d);
