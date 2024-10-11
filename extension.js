@@ -1571,14 +1571,20 @@ function ksInterpret(codeWord) {
 	let isOK = true;
 
 	if(!isNaN(codeWord)) {
+		isIf = false;
+		isThen = false;
+		isSemi = false;
 		// Push literal number to data stack
 		const num = Number(codeWord);
-		dataStack.push(num);
+		dataStack.push(num);		
 	}
 	else {
 		if((codeWord[0] == "'" && codeWord[codeWord.length - 1] == "'") || (codeWord[0] == "\"" && codeWord[codeWord.length - 1] == "\"")) {
+			isIf = false;
+			isThen = false;
+			isSemi = false;
 			// Push literal string to data stack
-			dataStack.push(codeWord.slice(1, -1));
+			dataStack.push(codeWord.slice(1, -1));			
 		}
 		else {
 			if(dictionaryObj[codeWord] != null) {
@@ -1626,6 +1632,9 @@ function ksInterpret(codeWord) {
 						}
 					}
 					else if(codeWord == "for") {
+						isIf = false;
+						isThen = false;
+						isSemi = false;
 						if(dataStack.length > 0) {
 							const t = dataStack.pop();
 							if(isNaN(t)) {
@@ -1644,9 +1653,15 @@ function ksInterpret(codeWord) {
 						}
 					}
 					else if(codeWord == "i") {
+						isIf = false;
+						isThen = false;
+						isSemi = false;
 						dataStack.push(forCnt);
 					}
 					else if(codeWord == "next") {
+						isIf = false;
+						isThen = false;
+						isSemi = false;
 						if(forCnt > 0) {
 							isNext = true;
 							forCnt--;
@@ -1656,15 +1671,24 @@ function ksInterpret(codeWord) {
 						}
 					}
 					else {
+						isIf = false;
+						isThen = false;
+						isSemi = false;
 						// Execute core word
 						isOK = dictionaryObj[codeWord]();
 					}
 				}
 				else if(typeof dictionaryObj[codeWord] === 'number') {
+					isIf = false;
+					isThen = false;
+					isSemi = false;
 					// Execute user func
-					isOK = ksExecute(dictionaryObj[codeWord]);
+					isOK = ksExecute(dictionaryObj[codeWord]);					
 				}
 				else {
+					isIf = false;
+					isThen = false;
+					isSemi = false;
 					if(dictionaryObj[codeWord].const) {
 						// Execute user const
 						dataStack.push(codeArray[dictionaryObj[codeWord].addr].val);
@@ -1672,7 +1696,7 @@ function ksInterpret(codeWord) {
 					else {
 						// Execute user var
 						dataStack.push(dictionaryObj[codeWord].addr);
-					}
+					}					
 				}
 			}
 			else {
