@@ -276,4 +276,7 @@ Fixed README.md to consider Marketplace markdown
 ### 1.1.11
 * Fix str-len
 * Fix variable initialization
+
+### 1.1.12
+* Fix yellow semi-colon handling
 ---
