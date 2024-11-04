@@ -2,8 +2,11 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "kolorScript",
 	"patterns": [
-		{
+        {
 			"include": "#invalids"
+		},
+		{
+			"include": "#comments"
 		},
 		{
 			"include": "#defines"
@@ -15,13 +18,10 @@
 			"include": "#constants"
 		},
 		{
-			"include": "#compiles"
-		},
-		{
 			"include": "#interprets"
 		},
 		{
-			"include": "#comments"
+			"include": "#compiles"
 		}
 	],
 	"repository": {
@@ -62,15 +62,15 @@
 				},		
 				{
 					"name": "comment.string.doublequote.kolorscript",
-					"match": "   \".*\""
+					"match": "   \".*?\""
 				},
 				{
 					"name": "comment.string.singlequote.kolorscript",
-					"match": "   '.*'"
+					"match": "   '.*?'"
 				},
 				{
 					"name": "comment.group.kolorscript",
-					"match": "   \\(.*\\)"
+					"match": " *\\(.*?\\)"
 				},
 				{
 					"name": "comment.word.kolorscript",
@@ -94,11 +94,15 @@
 				},
 				{
 					"name": "interpret.string.doublequote.kolorscript",
-					"match": "  \".*\""
+					"match": "  \".*?\""
 				},
 				{
 					"name": "interpret.string.singlequote.kolorscript",
-					"match": "  '.*'"
+					"match": "  '.*?'"
+				},
+				{
+					"name": "interpret.group.kolorscript",
+					"match": "  \\(.*?\\)"
 				},
 				{
 					"name": "interpret.word.kolorscript",
@@ -118,11 +122,15 @@
 				},				
 				{
 					"name": "compile.string.doublequote.kolorscript",
-					"match": " \".*\""
+					"match": " \".*?\""
 				},
 				{
 					"name": "compile.string.singlequote.kolorscript",
-					"match": " '.*'"
+					"match": " '.*?'"
+				},
+				{
+					"name": "compile.group.kolorscript",
+					"match": " \\(.*?\\)"
 				},
 				{
 					"name": "compile.word.kolorscript",
@@ -142,11 +150,11 @@
 				},
 				{
 					"name": "invalid.string.doublequote.kolorscript",
-					"match": "\".*\""
+					"match": "\".*?\""
 				},
 				{
 					"name": "invalid.string.singlequote.kolorscript",
-					"match": "'.*'"
+					"match": "'.*?'"
 				}
 			]
 		}
