@@ -2095,6 +2095,18 @@ function loadFile(lines, fullPath) {
 									words[currCol] = res.str;
 								}
 							}
+                            // Check if start with open parenthesis
+                            else if(words[currCol][0] == "(") {
+                                const res = getString(words, currCol, "(");
+
+                                if(res.isOK) {
+                                    currCol = res.j;
+                                }
+                                else {
+                                    isOK = res.isOK;
+                                    words[currCol] = res.str;
+                                }
+                            }
 							else {
 								if((currState == States.KS_STATE_COMPILE_FUNC || currState == States.KS_STATE_COMPILE_VAR) && words[currCol] == currDef) {
 									isOK = false;
@@ -2123,11 +2135,11 @@ function loadFile(lines, fullPath) {
 						currCol += 1;
 
 						if(words[currCol].length > 0) {
-							if(currState == States.KS_STATE_INTERPRET) {
+							if(currState == States.KS_STATE_INTERPRET && words[currCol][0] != "(") {
 								isOK = false;
 								errorMessage = "is not valid at Interpret state";
 							}
-							else if(currState == States.KS_STATE_COMPILE_VAR) {
+							else if(currState == States.KS_STATE_COMPILE_VAR && words[currCol][0] != "(") {
 								isOK = false;
 								errorMessage = "is not valid in initializing a variable";
 							}
@@ -2169,6 +2181,18 @@ function loadFile(lines, fullPath) {
 										words[currCol] = res.str;
 									}
 								}
+                                // Check if start with open parenthesis
+                                else if(words[currCol][0] == "(") {
+                                    const res = getString(words, currCol, "(");
+
+                                    if(res.isOK) {
+                                        currCol = res.j;
+                                    }
+                                    else {
+                                        isOK = res.isOK;
+                                        words[currCol] = res.str;
+                                    }
+                                }
 								else {
 									// Compile word
 									isOK = ksCompile(words[currCol]);
@@ -2192,105 +2216,120 @@ function loadFile(lines, fullPath) {
 					if(currCol == 0) {
 						currPre = 0;
 						currPost = 0;
-						const name = words[currCol];
-						if(words.length == 1) {
-							isOK = false;
-							printMsg("[" + fileName + "] Define '" + name + "' as constant ... ", false);
-							if(checkName(name, "constant")) {
-								isOK = false;
-							}
-							else if(currState == States.KS_STATE_COMPILE_FUNC) {
-								errorMessage = "incomplete";
-							}
-							else {
-								printMsg("[" + fileName + "] Define '" + name + "' as constant ... ", false);
-								errorMessage = "must have an inline initialization of GREEN number or string";
-							}
-						}
-						else {
-							if(words[1].length == 1) {
-								if(currState == States.KS_STATE_COMPILE_FUNC) {
-									isOK = false;
-									errorMessage = "incomplete";
-								}
-								else {
-									currState = States.KS_STATE_COMPILE_CONST;
-									printMsg("[" + fileName + "] Define '" + words[currCol] + "' as constant ... ", false);
-									if(checkName(name, "constant")) {
-										isOK = false;
-									}
-									else if(dictionaryObj[words[currCol]] != null) {
-										isOK = false;
-										errorMessage = "is already taken, please use another word";
-									}
-									else {
-										// Define constant
-										dictionaryObj[words[currCol]] = { addr: codeArray.length, const: true };
-										isNewConst = true;
-										newWordName =  words[currCol];
-										newWordSE = "";
-										newWordDesc = "";
-										console.log("Define constant:", words[currCol], dictionaryObj);
-									}
-								}
-							}
-							else if(words[1].length == 2) {
-								currPost = 1;
-								if(currState == States.KS_STATE_COMPILE_FUNC) {
-									isOK = false;
-									errorMessage = "incomplete";
-								}
-								else {
-									currState = States.KS_STATE_COMPILE_VAR;
-									printMsg("[" + fileName + "] Define '" + words[currCol] + "' as variable ... ", false);
-									if(checkName(name, "variable")) {
-										isOK = false;
-									}
-									else if(dictionaryObj[words[currCol]] != null) {
-										isOK = false;
-										errorMessage = "is already taken, please use another word";
-									}
-									else {
-										// Define variable
-										dictionaryObj[words[currCol]] = { addr: codeArray.length };
-										currDef = words[currCol];
-										isNewVar = true;
-										newWordName =  words[currCol];
-										newWordSE = "";
-										newWordDesc = "";
-										console.log("Define variable:", words[currCol], dictionaryObj);
-									}
-								}
-							}
-							else {
-								currPost = 2;
-								if(currState == States.KS_STATE_COMPILE_FUNC) {
-									printMsg("fall-through", true);
-								}
-								currState = States.KS_STATE_COMPILE_FUNC;
-								printMsg("[" + fileName + "] Define '" + words[currCol] + "' as function ... ", false);
-								isYellow = false;
-								currREDword = words[currCol];
-								currREDline = currRow + 1;
-								if(checkName(name, "function")) {
-									isOK = false;
-								}
-								else if(dictionaryObj[words[currCol]] != null) {
-									isOK = false;
-									errorMessage = "is already taken, please use another word";
-								}
-								else {
-									// Define function
-									dictionaryObj[words[currCol]] = codeArray.length;
-									currDef = words[currCol];
-									isNewFunc = true;
-									newWordName =  words[currCol];
-									newWordSE = "";
-									newWordDesc = "";
-									console.log("Define function:", words[currCol], dictionaryObj);
-								}
-							}
-						}
+                        // Check if start with open parenthesis
+                        if(words[currCol][0] == "(") {
+                            const res = getString(words, currCol, "(");
+
+                            if(res.isOK) {
+                                currCol = res.j;
+                                continue;
+                            }
+                            else {
+                                isOK = res.isOK;
+                                words[currCol] = res.str;
+                            }
+                        }
+                        if(isOK) {
+                            const name = words[currCol];
+                            if(words.length == 1) {
+                                isOK = false;
+                                printMsg("[" + fileName + "] Define '" + name + "' as constant ... ", false);
+                                if(checkName(name, "constant")) {
+                                    isOK = false;
+                                }
+                                else if(currState == States.KS_STATE_COMPILE_FUNC) {
+                                    errorMessage = "incomplete";
+                                }
+                                else {
+                                    printMsg("[" + fileName + "] Define '" + name + "' as constant ... ", false);
+                                    errorMessage = "must have an inline initialization of GREEN number or string";
+                                }
+                            }
+                            else {
+                                if(words[1].length == 1) {
+                                    if(currState == States.KS_STATE_COMPILE_FUNC) {
+                                        isOK = false;
+                                        errorMessage = "incomplete";
+                                    }
+                                    else {
+                                        currState = States.KS_STATE_COMPILE_CONST;
+                                        printMsg("[" + fileName + "] Define '" + words[currCol] + "' as constant ... ", false);
+                                        if(checkName(name, "constant")) {
+                                            isOK = false;
+                                        }
+                                        else if(dictionaryObj[words[currCol]] != null) {
+                                            isOK = false;
+                                            errorMessage = "is already taken, please use another word";
+                                        }
+                                        else {
+                                            // Define constant
+                                            dictionaryObj[words[currCol]] = { addr: codeArray.length, const: true };
+                                            isNewConst = true;
+                                            newWordName =  words[currCol];
+                                            newWordSE = "";
+                                            newWordDesc = "";
+                                            console.log("Define constant:", words[currCol], dictionaryObj);
+                                        }
+                                    }
+                                }
+                                else if(words[1].length == 2) {
+                                    currPost = 1;
+                                    if(currState == States.KS_STATE_COMPILE_FUNC) {
+                                        isOK = false;
+                                        errorMessage = "incomplete";
+                                    }
+                                    else {
+                                        currState = States.KS_STATE_COMPILE_VAR;
+                                        printMsg("[" + fileName + "] Define '" + words[currCol] + "' as variable ... ", false);
+                                        if(checkName(name, "variable")) {
+                                            isOK = false;
+                                        }
+                                        else if(dictionaryObj[words[currCol]] != null) {
+                                            isOK = false;
+                                            errorMessage = "is already taken, please use another word";
+                                        }
+                                        else {
+                                            // Define variable
+                                            dictionaryObj[words[currCol]] = { addr: codeArray.length };
+                                            currDef = words[currCol];
+                                            isNewVar = true;
+                                            newWordName =  words[currCol];
+                                            newWordSE = "";
+                                            newWordDesc = "";
+                                            console.log("Define variable:", words[currCol], dictionaryObj);
+                                        }
+                                    }
+                                }
+                                else {
+                                    currPost = 2;
+                                    if(currState == States.KS_STATE_COMPILE_FUNC) {
+                                        printMsg("fall-through", true);
+                                    }
+                                    currState = States.KS_STATE_COMPILE_FUNC;
+                                    printMsg("[" + fileName + "] Define '" + words[currCol] + "' as function ... ", false);
+                                    isYellow = false;
+                                    currREDword = words[currCol];
+                                    currREDline = currRow + 1;
+                                    if(checkName(name, "function")) {
+                                        isOK = false;
+                                    }
+                                    else if(dictionaryObj[words[currCol]] != null) {
+                                        isOK = false;
+                                        errorMessage = "is already taken, please use another word";
+                                    }
+                                    else {
+                                        // Define function
+                                        dictionaryObj[words[currCol]] = codeArray.length;
+                                        currDef = words[currCol];
+                                        isNewFunc = true;
+                                        newWordName =  words[currCol];
+                                        newWordSE = "";
+                                        newWordDesc = "";
+                                        console.log("Define function:", words[currCol], dictionaryObj);
+                                    }
+                                }
+                            }
+                        }
 					}
 					else {
 						// Unexpected
