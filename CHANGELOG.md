@@ -4,6 +4,12 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.13] - 2024-11-16
+
+- Fix syntax coloring
+- Add parenthesis commenting mechanism
+- Update built-in description
+
 ## [1.1.12] - 2024-10-13
 
 - Fix yellow semi-colon handling
