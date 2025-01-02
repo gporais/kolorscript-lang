@@ -160,7 +160,8 @@ let builtInDesc = [
             {name: "sub-str", stackEffect: "strMain numStart numEnd -- strMain strSub", description: "Retrieves the sub string from main string based on start and end position"},
             {name: "to-base64", stackEffect: "str -- strInBase64", description: "Converts the string to base64 string"},
             {name: "to-urlencode", stackEffect: "str -- strURLenconded", description: "Converts the string to URL encoded string"},
-            {name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},
+            {name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},            
+            {name: "to-US$", stackEffect: "num -- str", description: "Converts a number to a string in USD currency format"},
             {name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
             {name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
             {name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
@@ -1352,6 +1353,18 @@ const builtInFunc = {
 			errorMessage = "expects a string in Data stack";
 			isSuccess = false;
 		}
+		return isSuccess;
+	},
+	"to-US$" : function() {
+		let isSuccess = true;
+		let data = dataStack.pop();
+		if(typeof data == "number") {
+			dataStack.push(data.toLocaleString("en-US", {style:"currency", currency:"USD"}));
+		}
+		else {
+			errorMessage = "expects a number";
+			isSuccess = false;
+		}		
 		return isSuccess;
 	},
 	"to-str" : function() {
