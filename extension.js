@@ -1419,16 +1419,21 @@ const builtInFunc = {
 					fetch(url)
 					.then(response => {
 						if (!response.ok) {
-							errorMessage = "Network response was not ok: " + response.text();
+							errorMessage = "http-get: Network response was not ok, please check URL: " + url;
 							isSuccess = false;
 							outputChannel.appendLine(errorMessage);
+                            return 0;
 						}
-						return response.text();
+                        else {
+                            return response.text();
+                        }
 					})
 					.then(data => {dataStack.push(data); loadFile(saveLines, saveFullPath);})
-					.catch(error => { errorMessage = "There has been a problem with your fetch operation: " + error;
+					.catch(error => { errorMessage = "http-get: There has been a problem with your fetch operation: " + error;
 						isSuccess = false;
-						outputChannel.appendLine(errorMessage);	});
+						outputChannel.appendLine(errorMessage);
+                        dataStack.push(0);
+                        loadFile(saveLines, saveFullPath);});
 				}
 				else {
 					errorMessage = "expects a string for URL";
@@ -1436,7 +1441,7 @@ const builtInFunc = {
 				}
 			}
 			else {
-				errorMessage = "expects two strings in Data stack";
+				errorMessage = "expects a string in Data stack";
 				isSuccess = false;
 			}
 		}		
