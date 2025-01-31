@@ -10,6 +10,8 @@ const { readSync } = require('fs');
 const { closeSync } = require('fs');
 const { fstatSync } = require('fs');
 const { Buffer } = require('buffer');
+const cp = require('child_process');
+
 let fp = vscode.window.activeTextEditor.document.uri.fsPath;
 const isNix = (fp[0] == '/');
 let path = require('path');
@@ -1197,6 +1199,15 @@ const builtInFunc = {
 		return isSuccess;
 	},
 	"nop" : function() {
+		return true;
+	},
+    "beep" : function() {
+        if(isNix) {
+			cp.execSync('echo -e "\a"')
+		}
+		else {
+			cp.execSync('rundll32 user32.dll,MessageBeep')
+		}
 		return true;
 	},
 	"cr" : function() {
