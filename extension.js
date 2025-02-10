@@ -10,6 +10,7 @@ const { readSync } = require('fs');
 const { closeSync } = require('fs');
 const { fstatSync } = require('fs');
 const { Buffer } = require('buffer');
+const http = require('http');
 let fp = vscode.window.activeTextEditor.document.uri.fsPath;
 const isNix = (fp[0] == '/');
 let path = require('path');
@@ -82,6 +83,20 @@ const httpReqOptions = {
 	headers: {},
 	body: ""
 };
+
+let sseRes = null;
+let sseServer = http.createServer(function (req, res) {
+                   res.writeHead(200, {
+                       'Content-Type': 'text/event-stream',
+                       'Cache-Control': 'no-cache',
+                       'Connection': 'keep-alive',
+                       'Access-Control-Allow-Origin': '*'
+                   });
+                   sseRes = res;
+                   sseIsReady = true;
+                });
+let ssePort = 8080;
+let sseIsReady = false;
 
 let builtInDesc = [
 	{	name: "Built-in",
@@ -1199,6 +1214,38 @@ const builtInFunc = {
 	"nop" : function() {
 		return true;
 	},
+    "sse_listen" : function() {
+        if(!sseIsReady) {
+            if(dataStack.length > 0) {
+                let port = dataStack.pop()
+                if(typeof port == 'number') {
+                    ssePort = port;
+                }
+            }
+            sseServer.listen(ssePort);
+        }
+        return true;
+    },
+    "sse_send" : function() {
+        if(sseIsReady) {
+            const data = dataStack.pop();
+            sseRes.write("data: " + data  + "\n\n");
+        }
+        return true;
+    },
+    "sse_close" : function() {
+        sseClose()
+        return true;
+    },
+    "depth" : function() {
+        const depth = dataStack.length
+        dataStack.push(depth);
+        return true;
+    },
+    "reverse" : function() {
+        dataStack.reverse();
+        return true;
+    },
 	"cr" : function() {
 		let isSuccess = true;
 		if(isNix) {
@@ -2636,6 +2683,8 @@ function escapeKey() {
 		clearTimeout(timeoutId);
 		timeoutId = 0;
 	}
+
+    sseClose();
 }
 
 function goToDefinition() {	
@@ -2684,7 +2733,14 @@ function goToDefinition() {
 	}
 }
 
-
+function sseClose() {
+    if(sseIsReady) {
+        sseServer.close();
+        // Closes all connections, ensuring the server closes successfully
+        sseServer.closeAllConnections();
+        sseIsReady = false;
+    }
+}
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
