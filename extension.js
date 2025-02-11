@@ -176,7 +176,7 @@ let builtInDesc = [
             {name: "to-base64", stackEffect: "str -- strInBase64", description: "Converts the string to base64 string"},
             {name: "to-urlencode", stackEffect: "str -- strURLenconded", description: "Converts the string to URL encoded string"},
             {name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},            
-            {name: "to-US$", stackEffect: "num -- str", description: "Converts a number to a string in USD currency format"},
+            {name: "to-USD", stackEffect: "num -- str", description: "Converts a number to a string in USD currency format"},
             {name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
             {name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
             {name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
@@ -1214,7 +1214,7 @@ const builtInFunc = {
 	"nop" : function() {
 		return true;
 	},
-    "sse_listen" : function() {
+    "sse-listen" : function() {
         if(!sseIsReady) {
             if(dataStack.length > 0) {
                 let port = dataStack.pop()
@@ -1226,14 +1226,14 @@ const builtInFunc = {
         }
         return true;
     },
-    "sse_send" : function() {
+    "sse-send" : function() {
         if(sseIsReady) {
             const data = dataStack.pop();
             sseRes.write("data: " + data  + "\n\n");
         }
         return true;
     },
-    "sse_close" : function() {
+    "sse-close" : function() {
         sseClose()
         return true;
     },
@@ -1402,7 +1402,7 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"to-US$" : function() {
+	"to-USD" : function() {
 		let isSuccess = true;
 		let data = dataStack.pop();
 		if(typeof data == "number") {
