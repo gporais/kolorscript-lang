@@ -130,6 +130,7 @@ let builtInDesc = [
             {name: "nip", stackEffect: "any1 any2 -- any2", description: ""},
             {name: "if", stackEffect: "num --", description: "jump to 'then' if num is zero"},
             {name: "-if", stackEffect: "num --", description: "jump to 'then' if num is positive number"},
+            {name: "+if", stackEffect: "num --", description: "jump to 'then' if num is negative number"},
             {name: "then", stackEffect: "--", description: ""},            
             {name: "=", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 equal to any2, else 0"},
             {name: ">", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 greater than any2, else 0"},
@@ -534,6 +535,23 @@ const builtInFunc = {
 		if(dataStack.length > 0) {
 			const t = dataStack.pop();			
 			if(t >= 0) {
+				PC = addr;
+			}
+			else {
+				PC++;
+			}			
+		}
+		else {
+			errorMessage = "expects a value in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"+if" : function(addr) {
+		let isSuccess = true;
+		if(dataStack.length > 0) {
+			const t = dataStack.pop();			
+			if(t < 0) {
 				PC = addr;
 			}
 			else {
@@ -1233,10 +1251,6 @@ const builtInFunc = {
         }
         return true;
     },
-    "sse-close" : function() {
-        sseClose()
-        return true;
-    },
     "depth" : function() {
         const depth = dataStack.length
         dataStack.push(depth);
@@ -1694,6 +1708,17 @@ function ksInterpret(codeWord) {
 							isSkip = false;
 						}
 					}
+					else if(codeWord == "+if") {
+						const t = dataStack.pop();
+						isIf = true;
+						isSemi = false;
+						if(t < 0) {							
+							isSkip = true;
+						}
+						else {							
+							isSkip = false;
+						}
+					}
 					else if(codeWord == "then") {
 						isThen = true;
 						if(isSemi) {
@@ -1881,11 +1906,11 @@ function ksCompile(codeWord) {
 								}
 							}
 						}
-						else if(codeWord == 'if' || codeWord == '-if') {
-							// Create object that if/-if
+						else if(codeWord == 'if' || codeWord == '-if' || codeWord == '+if') {
+							// Create object that if/-if/+if
 							codeArray.push({type: Types.KS_TYPE_BUILTIN_FUNC, val: 0, exec: function() {const isOK = dictionaryObj[codeWord](this.val); return isOK;}});
 							
-							// Push index of if/-if for then
+							// Push index of if/-if/+if for then
 							ifStack.push(codeArray.length-1);
 						}
 						else if(codeWord == 'then') {
@@ -2683,8 +2708,6 @@ function escapeKey() {
 		clearTimeout(timeoutId);
 		timeoutId = 0;
 	}
-
-    sseClose();
 }
 
 function goToDefinition() {	
@@ -2835,6 +2858,7 @@ function deactivate() {
 	if(fdStack.length > 0) {
 		fdStack.forEach(fd => {closeSync(fd.fid);});
 	}
+	sseClose();
 }
 
 module.exports = {
