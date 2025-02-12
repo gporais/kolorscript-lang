@@ -6,7 +6,7 @@ Just in case, here is a good reference for Forth programming: [Starting Forth](h
 
 ## Features
 
-* 81 built-in Forth words
+* 86 built-in Forth words
 * Color blind mode
 * Your script will run on all three major OS (Mac/Win/Linux) with 100% NO modifications needed! Even path separators and EOL will be kept as it is
 
