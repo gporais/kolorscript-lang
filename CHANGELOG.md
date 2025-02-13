@@ -4,6 +4,10 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.17] - 2025-02-13
+
+- Added: Send ESC as SSE message during ESC
+
 ## [1.1.16] - 2025-02-12
 
 - Added: +if, depth, reverse, sse-listen, sse-send
