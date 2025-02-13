@@ -2712,6 +2712,10 @@ function escapeKey() {
 		clearTimeout(timeoutId);
 		timeoutId = 0;
 	}
+
+    if(sseIsReady) {
+        sseRes.write("data: ESC\n\n")
+    }
 }
 
 function goToDefinition() {	
