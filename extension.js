@@ -2579,6 +2579,15 @@ async function executeWords() {
 				const words = value.split(/(\s+)/);
 				let isOK = true;
 				let errorWord = "";
+				let origPC = PC;
+				let origIsPause = isPause;
+				let origReturnStack = [];
+
+				while(returnStack.length > 0) {
+					origReturnStack.push(returnStack.pop());
+				}
+				PC = 0;
+				isPause = false;
 
 				errorMessage = "";
 
@@ -2617,6 +2626,12 @@ async function executeWords() {
 
 						errorWord = words[j];
 					}
+				}
+
+				PC = origPC;
+				isPause = origIsPause;
+				while(origReturnStack.length > 0) {
+					returnStack.push(origReturnStack.pop());
 				}
 
 				if(!isOK) {
