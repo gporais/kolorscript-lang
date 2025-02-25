@@ -12,6 +12,7 @@ const { fstatSync } = require('fs');
 const { Buffer } = require('buffer');
 const http = require('http');
 let fp = vscode.window.activeTextEditor.document.uri.fsPath;
+let currFp = "";
 const isNix = (fp[0] == '/');
 let path = require('path');
 
@@ -2596,13 +2597,17 @@ async function executeWords() {
 				let origPC = PC;
 				let origIsPause = isPause;
 				let origReturnStack = [];
+                let pushedFullPath = false;
 
 				while(returnStack.length > 0) {
 					origReturnStack.push(returnStack.pop());
 				}
 				PC = 0;
 				isPause = false;
-
+                if(curFullPath.length == 0) {
+                    curFullPath.push(currFp);
+                    pushedFullPath = true;
+                }
 				errorMessage = "";
 
 				for (let j = 0; isOK && j < words.length; j++) {
@@ -2647,6 +2652,9 @@ async function executeWords() {
 				while(origReturnStack.length > 0) {
 					returnStack.push(origReturnStack.pop());
 				}
+                if(pushedFullPath) {
+                    curFullPath.pop();
+                }
 
 				if(!isOK) {
 					outputChannel.appendLine("Failed!");
@@ -2851,6 +2859,7 @@ function activate(context) {
 			forStack.length = 0;
 			fdStack.length = 0;
 
+            currFp = activeTextEditor.document.fileName;
 			loadFile(activeTextEditor.document.getText().split(/\r?\n/), activeTextEditor.document.fileName);
 		}
 	});
