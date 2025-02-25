@@ -105,6 +105,7 @@ let builtInDesc = [
 		details: [
             {name: "*", stackEffect: "num1 num2 -- num3", description: "num3 = num1 * num2"},
             {name: "/", stackEffect: "num1 num2 -- num3", description: "num3 = num1 / num2"},
+            {name: "mod", stackEffect: "num1 num2 -- num3", description: "num3 = num1 % num2"},
             {name: "+", stackEffect: "any1 any2 -- any3", description: "any3 = any1 + any2"},
             {name: "-", stackEffect: "num1 num2 -- num3", description: "num3 = num1 - num2"},
             {name: ">>", stackEffect: "num1 num2 -- num3", description: "num3 = num1 >> num2"},
@@ -212,6 +213,19 @@ const builtInFunc = {
 			const b = dataStack.pop();
 			const a = dataStack.pop();
 			dataStack.push(a / b);
+		}
+		else {
+			errorMessage = "expects two values in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"mod" : function() {
+		let isSuccess = true;
+		if(dataStack.length > 1) {
+			const b = dataStack.pop();
+			const a = dataStack.pop();
+			dataStack.push(a % b);
 		}
 		else {
 			errorMessage = "expects two values in Data stack";
