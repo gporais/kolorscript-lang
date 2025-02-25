@@ -4,6 +4,11 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.18] - 2025-02-25
+
+- Added: mod
+- Fixed: F4 (execute words)
+
 ## [1.1.17] - 2025-02-13
 
 - Added: Send ESC as SSE message during ESC
