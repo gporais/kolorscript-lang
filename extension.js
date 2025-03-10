@@ -99,6 +99,8 @@ let sseServer = http.createServer(function (req, res) {
 let ssePort = 8080;
 let sseIsReady = false;
 
+let recentLoaded = null;
+
 let builtInDesc = [
 	{	name: "Built-in",
 		nameMaxLen: 0,
@@ -2841,6 +2843,7 @@ function activate(context) {
 			const { activeTextEditor } = vscode.window;
 			if (!activeTextEditor) return;
 
+			recentLoaded = activeTextEditor;
 			funcDesc = [ ...builtInDesc ];
 			outputChannel.clear();
 			lineBuff = "";
@@ -2882,6 +2885,35 @@ function activate(context) {
 		showWords();
 	});
 
+    let ks_reloadRecent = vscode.commands.registerCommand('kolorScript.reloadRecent', function () {
+        if(recentLoaded != null) {
+            escapeKey();
+            funcDesc = [ ...builtInDesc ];
+            outputChannel.clear();
+            lineBuff = "";
+            codeArray.length = 0;
+            dictionaryObj = { ...builtInFunc };
+            
+            isVerbose = vscode.workspace.getConfiguration("kolorScript").get("verboseLoading");
+            isPrintOut = false;
+            isPause = false;
+            isEscape = false;
+    
+            dataStack.length = 0;
+            returnStack.length = 0;
+            ifStack.length = 0;
+            forStack.length = 0;
+            fdStack.length = 0;
+    
+            loadFile(recentLoaded.document.getText().split(/\r?\n/), recentLoaded.document.fileName);
+        }
+        else {
+            outputChannel.clear();
+	        outputChannel.appendLine("No recently loaded file");
+        }
+
+	});
+
 	let ks_escape = vscode.commands.registerCommand('kolorScript.escapeKey', function () {
 		escapeKey();
 	});
@@ -2895,6 +2927,7 @@ function activate(context) {
 	context.subscriptions.push(ks_toggleLightTheme);
 	context.subscriptions.push(ks_executeWords);
 	context.subscriptions.push(ks_showWords);
+    context.subscriptions.push(ks_reloadRecent);
 	context.subscriptions.push(ks_escape);
 	context.subscriptions.push(ks_goToDefinition);
 }
