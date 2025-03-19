@@ -2760,47 +2760,72 @@ function escapeKey() {
 function goToDefinition() {	
 	const editor = vscode.window.activeTextEditor;
 	const selection = editor.selection;
-	const pattern = new RegExp("\\S+");
+    const pattern_4spc = new RegExp("    .*");
+    const pattern_dq = new RegExp("\".*?\"");
+    const pattern_sq = new RegExp("'.*?'");
+    const pattern_par = new RegExp("\\(.*?\\)");
+    const pattern_word = new RegExp("\\S+");
 
 	
-	let wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern);
-	if (!wordRange) {
-		return;
-	}
-
-	let wordText = editor.document.getText(wordRange);
-
-	if(!isNaN(wordText)) {
-		outputChannel.replace(wordText + " is a Number");
-	}
-	else {
-		if((wordText[0] == "'" && wordText[wordText.length - 1] == "'") || (wordText[0] == "\"" && wordText[wordText.length - 1] == "\"")) {
-			outputChannel.replace(wordText + " is a String");
-		}
-		else {
-			if(dictionaryObj[wordText] != null) {
-				if(typeof dictionaryObj[wordText] === 'function') {
-					outputChannel.replace("Definition of \'");
-					outputChannel.appendLine(wordText + "\'");
-					outputChannel.appendLine(builtInFunc[wordText].toString());
-				}
-				else if(typeof dictionaryObj[wordText] === 'number') {
-					outputChannel.replace("Go to FUNCTION definition still under development");
-				}
-				else {
-					if(dictionaryObj[wordText].const) {
-						outputChannel.replace("Go to CONSTANT definition still under development");
-					}
-					else {
-						outputChannel.replace("Go to VARIABLE definition still under development");
-					}
-				}
-			}
-			else {
-				outputChannel.replace(wordText + " is not recognized");
-			}
-		}
-	}
+	let wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern_dq);
+    let wordText
+    if (wordRange) {
+        wordText = editor.document.getText(wordRange);
+        outputChannel.replace(wordText + " => is a double quoted String");
+    }
+    else {
+        wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern_sq);
+        if (wordRange) {
+            wordText = editor.document.getText(wordRange);
+            outputChannel.replace(wordText + " => is a single quoted String");
+        }
+        else {
+            wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern_par);
+            if (wordRange) {
+                wordText = editor.document.getText(wordRange);
+                outputChannel.replace(wordText + " => is a comment");
+            }
+            else {
+                wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern_4spc);
+                if (wordRange) {
+                    wordText = editor.document.getText(wordRange);
+                    outputChannel.replace(wordText.trim() + " => is a comment");
+                }
+                else {
+                    wordRange = editor.document.getWordRangeAtPosition(editor.selection.start, pattern_word);
+                    if (wordRange) {
+                        wordText = editor.document.getText(wordRange);
+                        if(!isNaN(wordText)) {
+                            outputChannel.replace(wordText + " => is a Number");
+                        }
+                        else {
+                            if(dictionaryObj[wordText] != null) {
+                                if(typeof dictionaryObj[wordText] === 'function') {
+                                    outputChannel.replace("Definition of \'");
+                                    outputChannel.appendLine(wordText + "\'");
+                                    outputChannel.appendLine(builtInFunc[wordText].toString());
+                                }
+                                else if(typeof dictionaryObj[wordText] === 'number') {
+                                    outputChannel.replace("Go to FUNCTION definition still under development");
+                                }
+                                else {
+                                    if(dictionaryObj[wordText].const) {
+                                        outputChannel.replace("Go to CONSTANT definition still under development");
+                                    }
+                                    else {
+                                        outputChannel.replace("Go to VARIABLE definition still under development");
+                                    }
+                                }
+                            }
+                            else {
+                                outputChannel.replace(wordText + " is not recognized");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 function sseClose() {
