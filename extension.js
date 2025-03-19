@@ -1807,24 +1807,24 @@ function ksInterpret(codeWord) {
 						isOK = dictionaryObj[codeWord]();
 					}
 				}
-				else if(typeof dictionaryObj[codeWord] === 'number') {
+				else if(typeof dictionaryObj[codeWord].exec === 'number') {
 					isIf = false;
 					isThen = false;
 					isSemi = false;
 					// Execute user func
-					isOK = ksExecute(dictionaryObj[codeWord]);					
+					isOK = ksExecute(dictionaryObj[codeWord].exec);					
 				}
 				else {
 					isIf = false;
 					isThen = false;
 					isSemi = false;
-					if(dictionaryObj[codeWord].const) {
+					if(dictionaryObj[codeWord].exec.const) {
 						// Execute user const
-						dataStack.push(codeArray[dictionaryObj[codeWord].addr].val);
+						dataStack.push(codeArray[dictionaryObj[codeWord].exec.addr].val);
 					}
 					else {
 						// Execute user var
-						dataStack.push(dictionaryObj[codeWord].addr);
+						dataStack.push(dictionaryObj[codeWord].exec.addr);
 					}					
 				}
 			}
@@ -1963,12 +1963,12 @@ function ksCompile(codeWord) {
 							codeArray.push({type: Types.KS_TYPE_BUILTIN_FUNC, val: 0, exec: function() {const isOK = dictionaryObj[codeWord](); PC++; return isOK;}});
 						}
 					}
-					else if(typeof dictionaryObj[codeWord] === 'number') {
+					else if(typeof dictionaryObj[codeWord].exec === 'number') {
 						// Create object that execute user defined word
-						codeArray.push({type: Types.KS_TYPE_USERDEF_FUNC, val: dictionaryObj[codeWord], exec: function() {returnStack.push(PC); PC = this.val; return true;}});
+						codeArray.push({type: Types.KS_TYPE_USERDEF_FUNC, val: dictionaryObj[codeWord].exec, exec: function() {returnStack.push(PC); PC = this.val; return true;}});
 					}
 					else {
-						if(dictionaryObj[codeWord].const) {
+						if(dictionaryObj[codeWord].exec.const) {
 							errorMessage = "is a constant, please change the word to YELLOW to retrieve the value";
 						}
 						else {
@@ -2392,7 +2392,7 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define constant
-                                            dictionaryObj[words[currCol]] = { addr: codeArray.length, const: true };
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length, const: true } };
                                             isNewConst = true;
                                             newWordName =  words[currCol];
                                             newWordSE = "";
@@ -2419,7 +2419,7 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define variable
-                                            dictionaryObj[words[currCol]] = { addr: codeArray.length };
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length } };
                                             currDef = words[currCol];
                                             isNewVar = true;
                                             newWordName =  words[currCol];
@@ -2448,7 +2448,7 @@ function loadFile(lines, fullPath) {
                                     }
                                     else {
                                         // Define function
-                                        dictionaryObj[words[currCol]] = codeArray.length;
+                                        dictionaryObj[words[currCol]] = { exec: codeArray.length };
                                         currDef = words[currCol];
                                         isNewFunc = true;
                                         newWordName =  words[currCol];
@@ -2805,11 +2805,11 @@ function goToDefinition() {
                                     outputChannel.appendLine(wordText + "\'");
                                     outputChannel.appendLine(builtInFunc[wordText].toString());
                                 }
-                                else if(typeof dictionaryObj[wordText] === 'number') {
+                                else if(typeof dictionaryObj[wordText].exec === 'number') {
                                     outputChannel.replace("Go to FUNCTION definition still under development");
                                 }
                                 else {
-                                    if(dictionaryObj[wordText].const) {
+                                    if(dictionaryObj[wordText].exec.const) {
                                         outputChannel.replace("Go to CONSTANT definition still under development");
                                     }
                                     else {
