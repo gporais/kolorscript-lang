@@ -2392,7 +2392,7 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define constant
-                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length, const: true } };
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length, const: true }, file: { path: fullPath, line: currRow } };
                                             isNewConst = true;
                                             newWordName =  words[currCol];
                                             newWordSE = "";
@@ -2419,7 +2419,7 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define variable
-                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length } };
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length }, file: { path: fullPath, line: currRow } };
                                             currDef = words[currCol];
                                             isNewVar = true;
                                             newWordName =  words[currCol];
@@ -2448,7 +2448,7 @@ function loadFile(lines, fullPath) {
                                     }
                                     else {
                                         // Define function
-                                        dictionaryObj[words[currCol]] = { exec: codeArray.length };
+                                        dictionaryObj[words[currCol]] = { exec: codeArray.length, file: { path: fullPath, line: currRow } };
                                         currDef = words[currCol];
                                         isNewFunc = true;
                                         newWordName =  words[currCol];
@@ -2805,20 +2805,26 @@ function goToDefinition() {
                                     outputChannel.appendLine(wordText + "\'");
                                     outputChannel.appendLine(builtInFunc[wordText].toString());
                                 }
-                                else if(typeof dictionaryObj[wordText].exec === 'number') {
-                                    outputChannel.replace("Go to FUNCTION definition still under development");
-                                }
                                 else {
-                                    if(dictionaryObj[wordText].exec.const) {
-                                        outputChannel.replace("Go to CONSTANT definition still under development");
-                                    }
-                                    else {
-                                        outputChannel.replace("Go to VARIABLE definition still under development");
-                                    }
+                                    var pos1 = new vscode.Position(dictionaryObj[wordText].file.line,0);
+                                    var pos2 = new vscode.Position(dictionaryObj[wordText].file.line,wordText.length);
+                                    var openPath = vscode.Uri.file(dictionaryObj[wordText].file.path);
+                                    vscode.workspace.openTextDocument(openPath).then(doc => 
+                                    {
+                                        vscode.window.showTextDocument(doc).then(editor => 
+                                        {
+                                            // Line added - by having a selection at the same position twice, the cursor jumps there
+                                            editor.selections = [new vscode.Selection(pos1,pos2)]; 
+                                    
+                                            // And the visible range jumps there too
+                                            var range = new vscode.Range(pos1, pos2);
+                                            editor.revealRange(range);
+                                        });
+                                    });
                                 }
                             }
                             else {
-                                outputChannel.replace(wordText + " is not recognized");
+                                outputChannel.replace(wordText + " is not recognized, please load the file containing its definition");
                             }
                         }
                     }
