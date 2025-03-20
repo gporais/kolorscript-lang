@@ -74,8 +74,12 @@
       "command": "kolorScript.toggleLightTheme"
     },
     {
-      "key": "f12",
+      "key": "f10",
       "command": "kolorScript.reloadRecent"
+    },
+    {
+      "key": "f12",
+      "command": "kolorScript.goToDefinition"
     },
     {
       "key": "escape",
