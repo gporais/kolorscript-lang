@@ -2,7 +2,7 @@
   "name": "kolorscript-lang",
   "displayName": "kolorScript",
   "description": "A modern variant of colorForth",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "publisher": "gporais",
   "author": {
 		"email": "orais.georgephillip@gmail.com",
@@ -39,6 +39,10 @@
     {
       "command": "kolorScript.toggleLightTheme",
       "title": "kolorScript: Toggle Light theme"
+    },
+    {
+      "command": "kolorScript.reloadRecent",
+      "title": "kolorScript: Reload recently loaded file"
     },
     {
       "command": "kolorScript.goToDefinition",

@@ -81,6 +81,12 @@ Where:
 Press `F9` OR press `F1` then type `kolor` and scroll to select `kolorScript: Toggle Light theme`
 ![Light theme](https://raw.githubusercontent.com/gporais/kolorscript-lang/master/images/screenshots/LightTheme.gif)
 
+### Reload recently loaded
+Press `F10` OR press `F1` then type `kolor` and scroll to select `kolorScript: Reload recently loaded file`
+
+### Go to definition
+Press `F12` OR press `F1` then type `kolor` and scroll to select `Go to definition`
+
 TIP: Use the function keys for faster and convenient access.
 
 ## Settings

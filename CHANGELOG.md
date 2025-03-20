@@ -4,6 +4,13 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.20] - 2025-03-20
+
+- Moved 'reload recently loaded file' to F10
+- Added 'go to definition' to F12
+- Complete 'go to definition' for user defined words
+- Fix 'go to definition' regex
+
 ## [1.1.19] - 2025-03-10
 
 - Added: F12 (reload recently loaded file)
