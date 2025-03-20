@@ -101,6 +101,10 @@ let sseIsReady = false;
 
 let recentLoaded = null;
 
+let gCurrRow = 0;
+let savedCurrRow = 0;
+let isLoadFromStr = false;
+
 let builtInDesc = [
 	{	name: "Built-in",
 		nameMaxLen: 0,
@@ -835,7 +839,10 @@ const builtInFunc = {
 					}
 				}
 				else {
-					isSuccess = loadFile(d.split("\\n"), "string from " + curFullPath[curFullPath.length - 1]);
+                    isLoadFromStr = true;
+                    savedCurrRow = gCurrRow;
+					isSuccess = loadFile(d.split("\\n"), curFullPath[curFullPath.length - 1]);
+                    isLoadFromStr = false;
 					if(!isSuccess) {
 						errorMessage = "cancel";
 					}
@@ -2123,6 +2130,7 @@ function loadFile(lines, fullPath) {
 		}
 		for (let currCol = initCol; isOK && !isEscape && currCol < words.length; currCol++) {
 			const wordLen = words[currCol].length;
+            gCurrRow = currRow;
 			if(wordLen > 0) {
 				if(isSkip) {
 					if(words[currCol] === "  " && (words[currCol+1] === "then" || words[currCol+1] === ";")) {
@@ -2392,7 +2400,8 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define constant
-                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length, const: true }, file: { path: fullPath, line: currRow } };
+                                            let ln = (isLoadFromStr) ? savedCurrRow : currRow;
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length, const: true }, file: { path: fullPath, line: ln } };
                                             isNewConst = true;
                                             newWordName =  words[currCol];
                                             newWordSE = "";
@@ -2419,7 +2428,8 @@ function loadFile(lines, fullPath) {
                                         }
                                         else {
                                             // Define variable
-                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length }, file: { path: fullPath, line: currRow } };
+                                            let ln = (isLoadFromStr) ? savedCurrRow : currRow;
+                                            dictionaryObj[words[currCol]] = { exec: { addr: codeArray.length }, file: { path: fullPath, line: ln } };
                                             currDef = words[currCol];
                                             isNewVar = true;
                                             newWordName =  words[currCol];
@@ -2448,7 +2458,8 @@ function loadFile(lines, fullPath) {
                                     }
                                     else {
                                         // Define function
-                                        dictionaryObj[words[currCol]] = { exec: codeArray.length, file: { path: fullPath, line: currRow } };
+                                        let ln = (isLoadFromStr) ? savedCurrRow : currRow;
+                                        dictionaryObj[words[currCol]] = { exec: codeArray.length, file: { path: fullPath, line: ln } };
                                         currDef = words[currCol];
                                         isNewFunc = true;
                                         newWordName =  words[currCol];
