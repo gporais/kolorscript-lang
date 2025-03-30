@@ -2617,6 +2617,7 @@ async function executeWords() {
 				}
 				PC = 0;
 				isPause = false;
+                isEscape = false;
                 if(curFullPath.length == 0) {
                     curFullPath.push(currFp);
                     pushedFullPath = true;
