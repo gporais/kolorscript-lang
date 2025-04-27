@@ -141,7 +141,7 @@ let builtInDesc = [
             {name: "if", stackEffect: "num --", description: "jump to 'then' if num is zero"},
             {name: "-if", stackEffect: "num --", description: "jump to 'then' if num is positive number"},
             {name: "+if", stackEffect: "num --", description: "jump to 'then' if num is negative number"},
-            {name: "then", stackEffect: "--", description: ""},            
+            {name: "then", stackEffect: "--", description: ""},
             {name: "=", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 equal to any2, else 0"},
             {name: ">", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 greater than any2, else 0"},
             {name: "<", stackEffect: "any1 any2 -- any1 any2 num", description: "num = 1 if any1 less than any2, else 0"},
@@ -155,7 +155,7 @@ let builtInDesc = [
             {name: "load", stackEffect: "str --", description: "str: either filename, path+filename, or a line of code"},
             {name: ".", stackEffect: "--", description: "top of D is popped and printed in output window"},
             {name: ".s", stackEffect: "--", description: "print contents of Data stack and Return stack in normal format"},
-            {name: ".sih", stackEffect: "--", description: "print contents of Data stack and Return stack in hex format"},            
+            {name: ".sih", stackEffect: "--", description: "print contents of Data stack and Return stack in hex format"},
             {name: "cls", stackEffect: "--", description: "it clears the output window"},
             {name: "num?", stackEffect: "any -- any num", description: "num = 1 if any is a number, else 0"},
             {name: "str?", stackEffect: "any -- any num", description: "num = 1 if any is a string, else 0"},
@@ -181,7 +181,7 @@ let builtInDesc = [
             {name: "sse-listen", stackEffect: "--", description: "Start SSE server listening at port 8080 (if not provided)"},
             {name: "sse-send", stackEffect: "any --", description: "Send data using SSE to client"},
             {name: "depth", stackEffect: "-- num", description: "Push the length of Data stack"},
-            {name: "reverse", stackEffect: "any1 any2 anyN -- anyN any2 any1", description: "Reverse the arrangement of Data stack"},			
+            {name: "reverse", stackEffect: "any1 any2 anyN -- anyN any2 any1", description: "Reverse the arrangement of Data stack"},
             {name: "cr", stackEffect: "-- str", description: "Push carriage return as string"},
             {name: "pad-start", stackEffect: "str -- strPadded", description: "Pad a string from the start with spaces until the resulting string reaches the specified length"},
             {name: "pad-end", stackEffect: "str -- strPadded", description: "Pad a string from the end with spaces until the resulting string reaches the specified length"},
@@ -190,7 +190,7 @@ let builtInDesc = [
             {name: "sub-str", stackEffect: "strMain numStart numEnd -- strMain strSub", description: "Retrieves the sub string from main string based on start and end position"},
             {name: "to-base64", stackEffect: "str -- strInBase64", description: "Converts the string to base64 string"},
             {name: "to-urlencode", stackEffect: "str -- strURLenconded", description: "Converts the string to URL encoded string"},
-            {name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},            
+            {name: "to-num", stackEffect: "str -- num", description: "Converts a number as string to a number"},
             {name: "to-USD", stackEffect: "num -- str", description: "Converts a number to a string in USD currency format"},
             {name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
             {name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
@@ -198,7 +198,8 @@ let builtInDesc = [
             {name: "http-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
             {name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
             {name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
-            {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"}
+            {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
+            {name: "say", stackEffect: "str --", description: "Convert text intt audio speech"}
 		]
 	}
 ];

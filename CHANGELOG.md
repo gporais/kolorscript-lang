@@ -4,6 +4,12 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.21] - 2025-04-28
+
+- Fix executeWords to able to work at idle state
+- Move code to src folder
+- Added: say
+
 ## [1.1.20] - 2025-03-20
 
 - Moved 'reload recently loaded file' to F10
