@@ -11,6 +11,8 @@ const { closeSync } = require('fs');
 const { fstatSync } = require('fs');
 const { Buffer } = require('buffer');
 const http = require('http');
+const cp = require('child_process');
+const os = require('os');
 let fp = vscode.window.activeTextEditor.document.uri.fsPath;
 let currFp = "";
 const isNix = (fp[0] == '/');
@@ -1638,7 +1640,41 @@ const builtInFunc = {
 			isSuccess = false;
 		}
 		return isSuccess;
-	}
+	},
+    "say" : function() {
+        let isSuccess = true;
+        if(dataStack.length > 0) {
+            const str = dataStack.pop();
+            if(typeof str == "string") {
+                if(isNix) {
+                    if(os.type() == "Darwin") {
+                        cp.exec('say "' + str + '"', (error, stdout, stderr)=> {
+                            console.log(error, stdout, stderr);
+                        });
+                    }
+                    else {
+                        cp.exec('spd-say "' + str + '"', (error, stdout, stderr)=> {
+                            console.log(error, stdout, stderr);
+                        });
+                    }
+                }
+                else {
+                    cp.exec("Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + str + "');", {'shell':'powershell.exe'}, (error, stdout, stderr)=> {
+                        console.log(error, stdout, stderr);
+                    });
+                }
+            }
+            else {
+                errorMessage = "expects a string to be spoken";
+                isSuccess = false;
+            }			
+        }
+        else {
+            errorMessage = "expects a string in Data stack";
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
 };
 
 function traverseDir(dir) {
