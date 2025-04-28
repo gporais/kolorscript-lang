@@ -199,7 +199,7 @@ let builtInDesc = [
             {name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
             {name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
             {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
-            {name: "say", stackEffect: "str --", description: "Convert text intt audio speech"}
+            {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"}
 		]
 	}
 ];
@@ -1645,30 +1645,24 @@ const builtInFunc = {
     "say" : function() {
         let isSuccess = true;
         if(dataStack.length > 0) {
-            const str = dataStack.pop();
-            if(typeof str == "string") {
-                if(isNix) {
-                    if(os.type() == "Darwin") {
-                        cp.exec('say "' + str + '"', (error, stdout, stderr)=> {
-                            console.log(error, stdout, stderr);
-                        });
-                    }
-                    else {
-                        cp.exec('spd-say "' + str + '"', (error, stdout, stderr)=> {
-                            console.log(error, stdout, stderr);
-                        });
-                    }
+            const data = dataStack.pop();
+            if(isNix) {
+                if(os.type() == "Darwin") {
+                    cp.exec('say "' + data + '"', (error, stdout, stderr)=> {
+                        console.log(error, stdout, stderr);
+                    });
                 }
                 else {
-                    cp.exec("Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + str + "');", {'shell':'powershell.exe'}, (error, stdout, stderr)=> {
+                    cp.exec('spd-say "' + data + '"', (error, stdout, stderr)=> {
                         console.log(error, stdout, stderr);
                     });
                 }
             }
             else {
-                errorMessage = "expects a string to be spoken";
-                isSuccess = false;
-            }			
+                cp.exec("Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + data + "');", {'shell':'powershell.exe'}, (error, stdout, stderr)=> {
+                    console.log(error, stdout, stderr);
+                });
+            }
         }
         else {
             errorMessage = "expects a string in Data stack";

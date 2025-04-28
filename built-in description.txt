@@ -85,4 +85,4 @@
             {name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
             {name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
             {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
-            {name: "say", stackEffect: "str --", description: "Convert text intt audio speech"}
+            {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"}
