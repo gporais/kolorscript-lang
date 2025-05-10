@@ -107,6 +107,8 @@ let gCurrRow = 0;
 let savedCurrRow = 0;
 let isLoadFromStr = false;
 
+let f4RecentStr = ""
+
 let builtInDesc = [
 	{	name: "Built-in",
 		nameMaxLen: 0,
@@ -2625,7 +2627,8 @@ function loadFile(lines, fullPath) {
 
 async function executeWords() {
 	await vscode.window.showInputBox({
-		placeHolder: 'Type in the words to be executed'
+		placeHolder: 'Type in the words to be executed',
+		value: f4RecentStr
 	}).then(value => {
 			if (value === undefined) {
 				//throw new Error('cancelled');
@@ -2634,6 +2637,8 @@ async function executeWords() {
 				// handle valid values
 				//outputChannel.clear();
 				printMsg("Executing ... ", true);
+
+				f4RecentStr = value;
 
 				const words = value.split(/(\s+)/);
 				let isOK = true;
