@@ -1466,7 +1466,7 @@ const builtInFunc = {
 		let decimal = 0;
 		let places = 0;
 		let isDecimal = true;
-		if(dataStack.length > 1 && typeof dataStack[dataStack.length-1] == "number") {
+		if(dataStack.length > 1 && typeof dataStack[dataStack.length-2] == "number" && typeof dataStack[dataStack.length-1] == "number") {
 			decimal = dataStack.pop();
 			places = decimal;
 			let decStr = decimal.toString();
