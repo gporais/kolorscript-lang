@@ -201,7 +201,8 @@ let builtInDesc = [
             {name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
             {name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
             {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
-            {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"}
+            {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"},
+            {name: "parse-json", stackEffect: "strJson strNameX numLevel -- str", description: "Parse json and retrieve data based on name and level"}
 		]
 	}
 ];
@@ -1670,6 +1671,31 @@ const builtInFunc = {
             errorMessage = "expects a string in Data stack";
             isSuccess = false;
         }
+        return isSuccess;
+    },
+    "parse-json" : function() {
+        let isSuccess = true;
+        const level = dataStack.pop();
+        
+        if(level == 1) {
+            const name =  dataStack.pop();
+            const data = JSON.parse(dataStack[dataStack.length-1]);
+            dataStack.push(data[name]);
+        }
+        else if(level == 2) {
+            const subname =  dataStack.pop();
+            const name =  dataStack.pop();
+            const data = JSON.parse(dataStack[dataStack.length-1]);
+            dataStack.push(data[name][subname]);
+        }
+        else if(level == 3) {
+            const subname1 =  dataStack.pop();
+            const subname =  dataStack.pop();
+            const name =  dataStack.pop();
+            const data = JSON.parse(dataStack[dataStack.length-1]);
+            dataStack.push(data[name][subname][subname1]);
+        }
+
         return isSuccess;
     }
 };
