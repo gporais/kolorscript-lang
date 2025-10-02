@@ -4,6 +4,10 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.25] - 2025-10-02
+
+- Added: parse-json
+
 ## [1.1.24] - 2025-08-19
 
 - Fix to-str
