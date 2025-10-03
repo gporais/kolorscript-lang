@@ -87,6 +87,11 @@ const httpPostReqOptions = {
 	body: ""
 };
 
+const httpGetReqOptions = {
+	method: 'GET',
+	headers: {}
+};
+
 let sseRes = null;
 let sseServer = http.createServer(function (req, res) {
                    res.writeHead(200, {
@@ -196,6 +201,9 @@ let builtInDesc = [
             {name: "to-USD", stackEffect: "num -- str", description: "Converts a number to a string in USD currency format"},
             {name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
             {name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
+            {name: "http-get-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP GET"},
+            {name: "http-get-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP GET"},
+            {name: "http-get-print-request", stackEffect: "--", description: "Prints the current request option for HTTP GET"},
             {name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
             {name: "http-post-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
             {name: "http-post-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
@@ -1511,7 +1519,7 @@ const builtInFunc = {
 				const url = dataStack.pop();
 				if(typeof url == "string") {
 					isPause = true;
-					fetch(url)
+					fetch(url, httpGetReqOptions)
 					.then(response => {
 						if (!response.ok) {
 							errorMessage = "http-get: Network response was not ok, please check URL: " + url;
@@ -1540,6 +1548,54 @@ const builtInFunc = {
 				isSuccess = false;
 			}
 		}		
+		return isSuccess;
+	},
+	"http-get-set-header" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 1) {
+			const value = dataStack.pop();
+			const name = dataStack.pop();
+			if(typeof value == "string") {				
+				if(typeof name == "string") {
+					httpGetReqOptions.headers[name] = value;
+				}
+				else {
+					errorMessage = "expects a string for name";
+					isSuccess = false;
+				}
+			}
+			else {
+				errorMessage = "expects a string for value";
+				isSuccess = false;
+			}
+		}
+		else {
+			errorMessage = "expects two strings in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"http-get-delete-header" : function() {
+		let isSuccess = true;		
+		if(dataStack.length > 0) {
+			const name = dataStack.pop();			
+			if(typeof name == "string") {
+				delete httpGetReqOptions.headers[name];
+			}
+			else {
+				errorMessage = "expects a string for name";
+				isSuccess = false;
+			}			
+		}
+		else {
+			errorMessage = "expects a string in Data stack";
+			isSuccess = false;
+		}
+		return isSuccess;
+	},
+	"http-get-print-request" : function() {
+		let isSuccess = true;
+		outputChannel.append(JSON.stringify(httpGetReqOptions) + " ");
 		return isSuccess;
 	},
 	"http-post" : function() {
