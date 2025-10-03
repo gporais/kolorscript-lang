@@ -81,7 +81,7 @@ const forStack = [];
 const fdStack = [];
 const buffSize = 1024;
 
-const httpReqOptions = {
+const httpPostReqOptions = {
 	method: 'POST',
 	headers: {},
 	body: ""
@@ -197,10 +197,10 @@ let builtInDesc = [
             {name: "to-str", stackEffect: "num (numDecimal) -- str", description: "Converts a number to string with option on decimal places"},
             {name: "http-get", stackEffect: "strURL -- strResponse", description: "Send HTTP GET request"},
             {name: "http-post", stackEffect: "strURL -- strResponse", description: "Send HTTP POST request, but set the header and body before sending."},
-            {name: "http-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
-            {name: "http-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
-            {name: "http-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
-            {name: "http-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
+            {name: "http-post-set-header", stackEffect: "strKey strValue --", description: "Add a key/value to the header for HTTP POST"},
+            {name: "http-post-delete-header", stackEffect: "strKey --", description: "Remove a key/value in the header for HTTP POST"},
+            {name: "http-post-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
+            {name: "http-post-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
             {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"},
             {name: "parse-json", stackEffect: "strJson strNameX numLevel -- str", description: "Parse json and retrieve data based on name and level"}
 		]
@@ -1553,7 +1553,7 @@ const builtInFunc = {
 				if(typeof url == "string") {
 					isPause = true;						
 
-					fetch(url, httpReqOptions)
+					fetch(url, httpPostReqOptions)
 					.then(response => {
 						if (!response.ok) {
 							errorMessage = "Network response was not ok";
@@ -1579,14 +1579,14 @@ const builtInFunc = {
 		}		
 		return isSuccess;
 	},
-	"http-set-header" : function() {
+	"http-post-set-header" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 1) {
 			const value = dataStack.pop();
 			const name = dataStack.pop();
 			if(typeof value == "string") {				
 				if(typeof name == "string") {
-					httpReqOptions.headers[name] = value;
+					httpPostReqOptions.headers[name] = value;
 				}
 				else {
 					errorMessage = "expects a string for name";
@@ -1604,12 +1604,12 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"http-delete-header" : function() {
+	"http-post-delete-header" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 0) {
 			const name = dataStack.pop();			
 			if(typeof name == "string") {
-				delete httpReqOptions.headers[name];
+				delete httpPostReqOptions.headers[name];
 			}
 			else {
 				errorMessage = "expects a string for name";
@@ -1622,17 +1622,17 @@ const builtInFunc = {
 		}
 		return isSuccess;
 	},
-	"http-print-request" : function() {
+	"http-post-print-request" : function() {
 		let isSuccess = true;
-		outputChannel.append(JSON.stringify(httpReqOptions) + " ");
+		outputChannel.append(JSON.stringify(httpPostReqOptions) + " ");
 		return isSuccess;
 	},
-	"http-set-body" : function() {
+	"http-post-set-body" : function() {
 		let isSuccess = true;		
 		if(dataStack.length > 0) {
 			const body = dataStack.pop();			
 			if(typeof body == "string") {
-				httpReqOptions.body = body;
+				httpPostReqOptions.body = body;
 			}
 			else {
 				errorMessage = "expects a string for body";
