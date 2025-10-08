@@ -4,6 +4,10 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.27] - 2025-10-08
+
+- Added: count-match
+
 ## [1.1.26] - 2025-10-03
 
 - Added: Words related to HTTP GET
