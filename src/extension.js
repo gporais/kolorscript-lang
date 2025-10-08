@@ -210,7 +210,8 @@ let builtInDesc = [
             {name: "http-post-print-request", stackEffect: "--", description: "Prints the current request option for HTTP POST"},
             {name: "http-post-set-body", stackEffect: "strBody --", description: "Sets the body for HTTP POST"},
             {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"},
-            {name: "parse-json", stackEffect: "strJson strNameX numLevel -- str", description: "Parse json and retrieve data based on name and level"}
+            {name: "parse-json", stackEffect: "strJson strNameX numLevel -- str", description: "Parse json and retrieve data based on name and level"},
+            {name: "count-match", stackEffect: "strMain strSub -- strMain numCount", description: "Return the number of sub string within the main string"},
 		]
 	}
 ];
@@ -1752,6 +1753,15 @@ const builtInFunc = {
             dataStack.push(data[name][subname][subname1]);
         }
 
+        return isSuccess;
+    },
+    "count-match" : function() {
+        let isSuccess = true;
+        const subStr =  dataStack.pop();
+        const mainStr =  dataStack[dataStack.length-1];
+        const regex = new RegExp(subStr, 'g'); // 'g' for global search
+        const matches = mainStr.match(regex);
+        dataStack.push(matches ? matches.length : 0);
         return isSuccess;
     }
 };
