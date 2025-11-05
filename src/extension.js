@@ -212,6 +212,7 @@ let builtInDesc = [
             {name: "say", stackEffect: "any --", description: "Convert number or string into audio speech"},
             {name: "parse-json", stackEffect: "strJson strNameX numLevel -- str", description: "Parse json and retrieve data based on name and level"},
             {name: "count-match", stackEffect: "strMain strSub -- strMain numCount", description: "Return the number of sub string within the main string"},
+            {name: "to-UTC", stackEffect: "numUnixTime -- strUTCTime", description: "Converts UNIX time to UTC time"},
 		]
 	}
 ];
@@ -1762,6 +1763,14 @@ const builtInFunc = {
         const regex = new RegExp(subStr, 'g'); // 'g' for global search
         const matches = mainStr.match(regex);
         dataStack.push(matches ? matches.length : 0);
+        return isSuccess;
+    },
+    "to-UTC" : function() {
+        let isSuccess = true;
+        const unixTimestamp =  dataStack.pop();
+        const milliseconds = unixTimestamp;
+        const dateObject = new Date(milliseconds);
+        dataStack.push(dateObject.toUTCString());
         return isSuccess;
     }
 };
