@@ -1165,12 +1165,16 @@ const builtInFunc = {
 	
 								if(newLine) {
 									//find next pos
-									for(; endPos <  fdStack[i].numBytesRead; endPos++) {
-										if(fdStack[i].buff[endPos] != 0x0a && fdStack[i].buff[endPos] != 0x0d) {
-											newPos = true;
-											break;
-										}
-									}
+                                    if(fdStack[i].buff[endPos] == 0x0a) {
+                                        endPos++;
+                                    }
+                                    else {
+                                        endPos++;
+                                        if(fdStack[i].buff[endPos] == 0x0a) {
+                                            endPos++;
+                                        }
+                                    }
+                                    newPos = true;
 								}
 
 								strLine += fdStack[i].buff.toString('ascii', startPos, endPos);								
