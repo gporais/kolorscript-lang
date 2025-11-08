@@ -4,6 +4,10 @@ All notable changes to the "kolorscript-lang" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.29] - 2025-11-08
+
+- Improved: read-line
+
 ## [1.1.28] - 2025-10-21
 
 - Added: to-UTC
